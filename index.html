@@ -390,4 +390,238 @@
       <p class="text-sm text-gray-600 mb-5">
         Jab birthday hi nahi hai toh yahan kya kar rahi ho? 5th November aane do!
       </p>
-      <button onclick="closeModal('notBirthdayModal')" class="w-full bg-gray-800 hover:bg-black te
+      <button onclick="closeModal('notBirthdayModal')" class="w-full bg-gray-800 hover:bg-black text-white font-bold py-3 rounded-xl shadow-md active:scale-95 transition">
+        Ok bye! 👋
+      </button>
+    </div>
+  </div>
+
+  <div id="intruderModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl pop-in">
+      <div class="text-5xl mb-3 animate-spin">🤨🚨</div>
+      <h3 class="text-2xl font-black text-rose-600 mb-2">Who are you?!</h3>
+      <p class="text-sm text-gray-600 mb-5">
+        Intruders not allowed! Galat jawab hai. Only Shruti knows the right answer! Try again!
+      </p>
+      <button onclick="closeModal('intruderModal')" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 rounded-xl shadow-md active:scale-95 transition">
+        Wapas try karo 🙈
+      </button>
+    </div>
+  </div>
+
+  <!-- Secret Developer Toast -->
+  <div id="secretToast" class="fixed bottom-6 bg-gray-900/90 text-white text-xs px-4 py-2 rounded-full shadow-lg pointer-events-none transition-all duration-300 opacity-0 transform translate-y-4 z-50">
+    🧪 Secret preview mode ON! Gate bypassed.
+  </div>
+
+  <script>
+    let previewMode = false;
+    let secretTapCount = 0;
+    let secretTapTimer = null;
+    let noAttempts = 0;
+    let isBgmPlaying = false;
+
+    // Real MP3 Background Music Controller
+    function toggleSoundtrack() {
+      const audio = document.getElementById('softAudio');
+      const btn = document.getElementById('bgmBtn');
+      
+      if (isBgmPlaying) {
+        audio.pause();
+        isBgmPlaying = false;
+        btn.innerText = '🎵 Music: Off';
+      } else {
+        audio.play().then(() => {
+          isBgmPlaying = true;
+          btn.innerText = '🎶 Music: On';
+        }).catch(err => {
+          console.log("Audio play blocked by browser:", err);
+        });
+      }
+    }
+
+    // Secret Easter Egg Trigger (Tap Panda Logo 5 Times)
+    function handleSecretTap() {
+      secretTapCount++;
+      clearTimeout(secretTapTimer);
+      secretTapTimer = setTimeout(() => {
+        secretTapCount = 0;
+      }, 2000);
+
+      if (secretTapCount >= 5) {
+        previewMode = true;
+        secretTapCount = 0;
+        showToast("🧪 Secret preview mode ON! Gate bypassed.");
+        if (!document.getElementById('gate1Card').classList.contains('hidden')) {
+          document.getElementById('gate1Card').classList.add('hidden');
+          document.getElementById('gate2Card').classList.remove('hidden');
+        }
+      }
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('secretToast');
+      t.innerText = msg;
+      t.classList.remove('opacity-0', 'translate-y-4');
+      setTimeout(() => {
+        t.classList.add('opacity-0', 'translate-y-4');
+      }, 2500);
+    }
+
+    // Gate 1: Birthday Check Logic
+    function verifyBirthday(isYes) {
+      if (!isYes) {
+        document.getElementById('notBirthdayModal').classList.remove('hidden');
+        return;
+      }
+
+      const today = new Date();
+      const isNov5 = (today.getMonth() === 10 && today.getDate() === 5);
+
+      if (isNov5 || previewMode) {
+        document.getElementById('gate1Card').classList.add('hidden');
+        document.getElementById('gate2Card').classList.remove('hidden');
+      } else {
+        updateLiveCountdown();
+        document.getElementById('waitModal').classList.remove('hidden');
+      }
+    }
+
+    function updateLiveCountdown() {
+      const now = new Date();
+      let targetYear = now.getFullYear();
+      let targetDate = new Date(targetYear, 10, 5, 0, 0, 0);
+
+      if (now > targetDate) {
+        targetDate = new Date(targetYear + 1, 10, 5, 0, 0, 0);
+      }
+
+      const diff = targetDate - now;
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const m = Math.floor((diff / 1000 / 60) % 60);
+      const s = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('daysCount').innerText = String(d).padStart(2, '0');
+      document.getElementById('hoursCount').innerText = String(h).padStart(2, '0');
+      document.getElementById('minsCount').innerText = String(m).padStart(2, '0');
+      document.getElementById('secsCount').innerText = String(s).padStart(2, '0');
+    }
+    setInterval(updateLiveCountdown, 1000);
+
+    // Gate 2: Nickname Security Quiz
+    function checkAnswer(ans) {
+      if (ans === 'choti panda') {
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+        
+        document.getElementById('gate2Card').classList.add('hidden');
+        document.getElementById('stepCake').classList.remove('hidden');
+        
+        if (!isBgmPlaying) toggleSoundtrack();
+      } else {
+        document.getElementById('intruderModal').classList.remove('hidden');
+      }
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    // Step Navigation
+    function goToStep(stepName) {
+      ['Cake', 'Memories', 'Letter', 'Call'].forEach(s => {
+        document.getElementById('step' + s).classList.add('hidden');
+      });
+      const nextEl = document.getElementById('step' + stepName);
+      nextEl.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Candle Interactions
+    function extinguishCandle(candleEl) {
+      const flame = candleEl.querySelector('.flame');
+      if (flame && flame.style.display !== 'none') {
+        flame.style.display = 'none';
+        
+        const smoke = document.createElement('div');
+        smoke.className = 'smoke';
+        candleEl.appendChild(smoke);
+        setTimeout(() => smoke.remove(), 1200);
+
+        confetti({ particleCount: 30, spread: 50, origin: { y: 0.5 } });
+      }
+    }
+
+    function blowAllCandles() {
+      document.querySelectorAll('.candle').forEach(c => extinguishCandle(c));
+      confetti({ particleCount: 200, spread: 90, origin: { y: 0.6 } });
+      document.getElementById('candleInstruction').innerText = '🎉 All candles blown! Big wish granted! 🎶';
+      
+      const bgAudio = document.getElementById('softAudio');
+      const hbdAudio = document.getElementById('hbdAudio');
+      
+      if (bgAudio) {
+        bgAudio.pause();
+        isBgmPlaying = false;
+        document.getElementById('bgmBtn').innerText = '🎵 Music: Off';
+      }
+      
+      if (hbdAudio) {
+        hbdAudio.currentTime = 0;
+        hbdAudio.play().catch(e => console.log("HBD audio blocked:", e));
+      }
+    }
+
+    // Step 4: Call Decision & Runaway Button Logic
+    function handleCallDecision(isYes) {
+      if (isYes) {
+        confetti({ particleCount: 200, spread: 100, origin: { y: 0.5 } });
+        document.getElementById('callArena').classList.add('hidden');
+        document.getElementById('callSuccessBox').classList.remove('hidden');
+        document.getElementById('callPromptTitle').innerText = 'Yayyy! You said YES! 🎉💖';
+        document.getElementById('pleadingSubtitle').innerText = 'Ab call bhi lagao jaldi! 🙈';
+      } else {
+        noAttempts++;
+        const sub = document.getElementById('pleadingSubtitle');
+        const yesBtn = document.getElementById('callYesBtn');
+        const noBtn = document.getElementById('runawayBtn');
+
+        yesBtn.style.transform = `scale(${1 + noAttempts * 0.12})`;
+
+        if (noAttempts === 1) {
+          sub.innerText = "Please karo na 🥺👉👈";
+        } else if (noAttempts === 2) {
+          sub.innerText = "Aise mat karo please karo na 😭💔";
+        } else if (noAttempts === 3) {
+          sub.innerText = "Pakka na? Ek call to banta hai na! 😤";
+        } else {
+          sub.innerText = "Hehe ab No click karke dikhao! 😜🏃💨";
+          makeButtonRunaway(noBtn);
+        }
+      }
+    }
+
+    function makeButtonRunaway(btn) {
+      btn.style.position = 'absolute';
+      const dodge = () => {
+        const parent = document.getElementById('callArena');
+        const maxX = parent.clientWidth - btn.clientWidth - 10;
+        const maxY = parent.clientHeight - btn.clientHeight - 10;
+        
+        const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+        const randomY = Math.max(10, Math.floor(Math.random() * maxY));
+        
+        btn.style.left = `${randomX}px`;
+        btn.style.top = `${randomY}px`;
+      };
+
+      btn.onmouseover = dodge;
+      btn.ontouchstart = (e) => {
+        e.preventDefault();
+        dodge();
+      };
+      dodge();
+    }
+  </script>
+</body>
+</html>
