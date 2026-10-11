@@ -73,7 +73,7 @@
     }
   </style>
 </head>
-<body class="relative text-gray-800 flex flex-col justify-between">
+<body class="relative text-gray-800 flex flex-col justify-between" onclick="ensureMusicPlaying()">
 
   <!-- MP3 Audio Elements -->
   <audio id="softAudio" loop src="bgm.mp3" preload="auto"></audio>
@@ -83,16 +83,11 @@
   <div class="bg-bubble w-72 h-72 bg-pink-200/50 top-[-50px] left-[-50px]"></div>
   <div class="bg-bubble w-96 h-96 bg-purple-200/40 bottom-[-50px] right-[-50px]"></div>
 
-  <!-- Header -->
-  <header class="relative z-10 w-full max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+  <!-- Header (Clean without any music button) -->
+  <header class="relative z-10 w-full max-w-4xl mx-auto px-4 py-4 flex justify-center sm:justify-start items-center">
     <div id="secretLogo" onclick="handleSecretTap()" class="flex items-center gap-2 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-sm border border-pink-100 cursor-pointer select-none">
       <span class="text-2xl animate-bounce">🐼</span>
       <span class="font-bold text-sm text-pink-600 tracking-wide">Special for Shruti</span>
-    </div>
-    <div class="flex items-center gap-2">
-      <button onclick="toggleSoundtrack()" id="bgmBtn" class="bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-sm border border-pink-100 text-pink-600 font-bold text-xs sm:text-sm hover:scale-105 active:scale-95 transition">
-        🎵 Music: Off
-      </button>
     </div>
   </header>
 
@@ -421,22 +416,13 @@
     let noAttempts = 0;
     let isBgmPlaying = false;
 
-    // Real MP3 Background Music Controller
-    function toggleSoundtrack() {
+    // Continuous Background Music Autoplay Helper
+    function ensureMusicPlaying() {
       const audio = document.getElementById('softAudio');
-      const btn = document.getElementById('bgmBtn');
-      
-      if (isBgmPlaying) {
-        audio.pause();
-        isBgmPlaying = false;
-        btn.innerText = '🎵 Music: Off';
-      } else {
+      if (!isBgmPlaying && audio) {
         audio.play().then(() => {
           isBgmPlaying = true;
-          btn.innerText = '🎶 Music: On';
-        }).catch(err => {
-          console.log("Audio play blocked by browser:", err);
-        });
+        }).catch(() => {});
       }
     }
 
@@ -470,6 +456,7 @@
 
     // Gate 1: Birthday Check Logic
     function verifyBirthday(isYes) {
+      ensureMusicPlaying();
       if (!isYes) {
         document.getElementById('notBirthdayModal').classList.remove('hidden');
         return;
@@ -511,13 +498,12 @@
 
     // Gate 2: Nickname Security Quiz
     function checkAnswer(ans) {
+      ensureMusicPlaying();
       if (ans === 'choti panda') {
         confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
         
         document.getElementById('gate2Card').classList.add('hidden');
         document.getElementById('stepCake').classList.remove('hidden');
-        
-        if (!isBgmPlaying) toggleSoundtrack();
       } else {
         document.getElementById('intruderModal').classList.remove('hidden');
       }
@@ -529,6 +515,7 @@
 
     // Step Navigation
     function goToStep(stepName) {
+      ensureMusicPlaying();
       ['Cake', 'Memories', 'Letter', 'Call'].forEach(s => {
         document.getElementById('step' + s).classList.add('hidden');
       });
@@ -539,6 +526,7 @@
 
     // Candle Interactions
     function extinguishCandle(candleEl) {
+      ensureMusicPlaying();
       const flame = candleEl.querySelector('.flame');
       if (flame && flame.style.display !== 'none') {
         flame.style.display = 'none';
@@ -560,20 +548,22 @@
       const bgAudio = document.getElementById('softAudio');
       const hbdAudio = document.getElementById('hbdAudio');
       
-      if (bgAudio) {
-        bgAudio.pause();
-        isBgmPlaying = false;
-        document.getElementById('bgmBtn').innerText = '🎵 Music: Off';
-      }
-      
+      // Pause background music to play Cake Birthday Song
+      if (bgAudio) bgAudio.pause();
       if (hbdAudio) {
         hbdAudio.currentTime = 0;
         hbdAudio.play().catch(e => console.log("HBD audio blocked:", e));
+        
+        // When birthday song finishes, resume soft BGM
+        hbdAudio.onended = () => {
+          if (bgAudio) bgAudio.play().catch(() => {});
+        };
       }
     }
 
     // Step 4: Call Decision & Runaway Button Logic
     function handleCallDecision(isYes) {
+      ensureMusicPlaying();
       if (isYes) {
         confetti({ particleCount: 200, spread: 100, origin: { y: 0.5 } });
         document.getElementById('callArena').classList.add('hidden');
