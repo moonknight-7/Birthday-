@@ -145,4 +145,488 @@
         </button>
         <button onclick="checkAnswer('shruti')" class="bg-pink-50 hover:bg-pink-100 text-pink-700 font-bold py-3.5 px-4 rounded-2xl border border-pink-200 hover:scale-102 active:scale-95 transition">
           shruti
+        </button>
+        <button onclick="checkAnswer('choti panda')" class="bg-pink-50 hover:bg-pink-100 text-pink-700 font-bold py-3.5 px-4 rounded-2xl border border-pink-200 hover:scale-102 active:scale-95 transition">
+          choti panda
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 1: CAKE STAGE -->
+    <div id="stepCake" class="w-full flex flex-col gap-6 hidden pop-in">
+      <div class="text-center pt-2">
+        <span class="inline-block bg-pink-100 text-pink-600 font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-widest mb-2">
+          Step 1 • Make A Wish 🎂
+        </span>
+        <h1 class="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">
+          Happy Birthday, <br class="sm:hidden" />
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600">
+            Choti Panda! 🐼🎉
+          </span>
+        </h1>
+        <p class="text-gray-600 text-sm mt-1">
+          Mombatti bujhao aur apni sabse badi wish maango!
+        </p>
+      </div>
+
+      <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-pink-100 flex flex-col items-center">
+        <!-- Cake Graphic -->
+        <div class="relative w-64 h-56 flex flex-col items-center justify-end mb-6 select-none">
+          <div class="flex gap-6 mb-1 z-20">
+            <div class="candle relative flex flex-col items-center cursor-pointer" onclick="extinguishCandle(this)">
+              <div class="flame w-3.5 h-6"></div>
+              <div class="w-2.5 h-10 bg-gradient-to-b from-yellow-200 to-yellow-400 rounded-t-sm shadow-sm"></div>
+            </div>
+            <div class="candle relative flex flex-col items-center cursor-pointer" onclick="extinguishCandle(this)">
+              <div class="flame w-4 h-7"></div>
+              <div class="w-3 h-12 bg-gradient-to-b from-pink-300 to-rose-400 rounded-t-sm shadow-sm"></div>
+            </div>
+            <div class="candle relative flex flex-col items-center cursor-pointer" onclick="extinguishCandle(this)">
+              <div class="flame w-3.5 h-6"></div>
+              <div class="w-2.5 h-10 bg-gradient-to-b from-blue-200 to-indigo-300 rounded-t-sm shadow-sm"></div>
+            </div>
+          </div>
+          <div class="w-40 h-14 bg-gradient-to-r from-pink-300 via-rose-300 to-pink-300 rounded-t-2xl shadow-inner relative flex justify-around items-center border-b-4 border-pink-400">
+            <span class="text-xs">🍓</span>
+            <span class="text-xs">🍒</span>
+            <span class="text-xs">🍓</span>
+          </div>
+          <div class="w-52 h-16 bg-gradient-to-r from-amber-100 via-white to-amber-100 shadow-md relative flex justify-around items-center border-b-4 border-pink-200">
+            <div class="w-full absolute top-0 h-3 bg-pink-400 rounded-b-full"></div>
+            <span class="text-xs font-black text-pink-500 z-10 tracking-wider">HAPPY BIRTHDAY</span>
+          </div>
+          <div class="w-64 h-4 bg-gray-200 rounded-full shadow-lg border border-gray-300"></div>
+        </div>
+
+        <p id="candleInstruction" class="text-xs font-semibold text-gray-500 mb-4 text-center">
+          Tap on each flame to blow it out! 💨
+        </p>
+
+        <div class="flex flex-col gap-3 w-full max-w-xs items-center">
+          <button onclick="blowAllCandles()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2.5 px-6 rounded-full text-sm shadow-md active:scale-95 transition">
+            💨 Blow All Candles Together
+          </button>
           
+          <!-- Next Button to Step 2 -->
+          <button onclick="goToStep('Memories')" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-extrabold py-3 px-6 rounded-2xl shadow-lg shadow-pink-200 flex items-center justify-center gap-2 hover:scale-102 active:scale-95 transition">
+            Next: See Memories 📸 &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: MEMORIES STAGE -->
+    <div id="stepMemories" class="w-full flex flex-col gap-6 hidden pop-in">
+      <div class="text-center pt-2">
+        <span class="inline-block bg-purple-100 text-purple-600 font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-widest mb-2">
+          Step 2 • Moments & Vibes 📸
+        </span>
+        <h2 class="text-3xl font-black text-gray-900 tracking-tight">
+          Some Cute Moments ✨
+        </h2>
+        <p class="text-gray-600 text-sm mt-1">
+          Panda memories and memories only!
+        </p>
+      </div>
+
+      <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-pink-100">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+          <div class="bg-white p-4 pb-6 rounded-2xl shadow-md border border-gray-100 rotate-[-2deg] hover:rotate-0 transition duration-300">
+            <div class="w-full h-44 bg-pink-100 rounded-xl overflow-hidden flex items-center justify-center text-5xl">
+              🐼🎈
+            </div>
+            <p class="handwriting text-2xl text-center text-gray-700 mt-3">The cutest drama queen ✨</p>
+          </div>
+          <div class="bg-white p-4 pb-6 rounded-2xl shadow-md border border-gray-100 rotate-[2deg] hover:rotate-0 transition duration-300">
+            <div class="w-full h-44 bg-purple-100 rounded-xl overflow-hidden flex items-center justify-center text-5xl">
+              🎂✨
+            </div>
+            <p class="handwriting text-2xl text-center text-gray-700 mt-3">Forever Choti Panda 🎋</p>
+          </div>
+        </div>
+
+        <!-- Next Button to Step 3 -->
+        <div class="flex justify-center">
+          <button onclick="goToStep('Letter')" class="w-full max-w-xs bg-pink-600 hover:bg-pink-700 text-white font-extrabold py-3.5 px-6 rounded-2xl shadow-lg shadow-pink-200 flex items-center justify-center gap-2 hover:scale-102 active:scale-95 transition">
+            Next: Read Letter 💌 &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: LETTER STAGE -->
+    <div id="stepLetter" class="w-full flex flex-col gap-6 hidden pop-in">
+      <div class="text-center pt-2">
+        <span class="inline-block bg-pink-100 text-pink-600 font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-widest mb-2">
+          Step 3 • From The Heart 💌
+        </span>
+        <h2 class="text-3xl font-black text-gray-900 tracking-tight">
+          A Letter For You 📜
+        </h2>
+        <p class="text-gray-600 text-sm mt-1">
+          Thoda emotional aur thoda sach!
+        </p>
+      </div>
+
+      <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-pink-100">
+        <div class="border-2 border-dashed border-pink-200 p-6 sm:p-8 rounded-2xl bg-pink-50/40 mb-8">
+          <h3 class="handwriting text-3xl font-bold text-pink-600 mb-4">Dear Choti Panda,</h3>
+          <p class="handwriting text-2xl text-gray-700 leading-relaxed space-y-4">
+            Happy Birthday! 🎂✨ May your year be as cheerful, peaceful, and wonderful as you are. 
+            Keep smiling, keep eating your bamboo in peace, aur hamesha aisi hi cute aur unique rehna!
+          </p>
+          <div class="mt-6 text-right">
+            <span class="handwriting text-2xl font-bold text-gray-800">— With lots of wishes & smiles ✨</span>
+          </div>
+        </div>
+
+        <!-- Next Button to Step 4 (Call Section) -->
+        <div class="flex justify-center">
+          <button onclick="goToStep('Call')" class="w-full max-w-xs bg-gradient-to-r from-pink-600 to-rose-500 hover:from-pink-700 hover:to-rose-600 text-white font-extrabold py-3.5 px-6 rounded-2xl shadow-lg shadow-pink-200 flex items-center justify-center gap-2 hover:scale-102 active:scale-95 transition">
+            Next: Ek Final Sawaal... 📞 &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4 (FINAL): CALL SECTION WITH RUNAWAY BUTTON -->
+    <div id="stepCall" class="w-full flex flex-col gap-6 hidden pop-in">
+      <div class="text-center pt-2">
+        <span class="inline-block bg-rose-100 text-rose-600 font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-widest mb-2">
+          Final Question 📞
+        </span>
+      </div>
+
+      <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-pink-100 text-center relative overflow-hidden">
+        <span class="text-5xl block mb-3">📞💖</span>
+        <h2 id="callPromptTitle" class="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-2">
+          Ek aakhri sawaal... Do you wanna call me?
+        </h2>
+        <p id="pleadingSubtitle" class="text-sm sm:text-base font-semibold text-pink-600 mb-6 transition">
+          Sach sach batao! 🙈
+        </p>
+
+        <!-- Arena for Call Options -->
+        <div id="callArena" class="relative min-h-[90px] w-full flex justify-center items-center gap-4">
+          <button id="callYesBtn" onclick="handleCallDecision(true)" class="bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold py-3.5 px-8 rounded-2xl shadow-lg shadow-emerald-200 transition-all duration-200 z-10 hover:scale-105 active:scale-95">
+            Yes! 📞
+          </button>
+          
+          <button id="runawayBtn" onclick="handleCallDecision(false)" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold py-3.5 px-8 rounded-2xl border border-rose-200 transition z-20">
+            No 🙅‍♀️
+          </button>
+        </div>
+
+        <!-- Success Reveal Box (Shown when Yes is clicked) -->
+        <div id="callSuccessBox" class="mt-6 p-6 bg-emerald-50 border border-emerald-200 rounded-2xl hidden pop-in">
+          <div class="text-4xl mb-2">🥳📞✨</div>
+          <h3 class="text-xl font-bold text-emerald-800 mb-1">
+            Mission Successful!
+          </h3>
+          <p class="text-sm text-emerald-600 mb-5">
+            Call laga rahi ho na? Direct number par dial karo:
+          </p>
+          <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
+            <!-- Direct Unhindered Mobile Phone Dial -->
+            <a href="tel:7004875135" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-md flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition">
+              <span>📞</span> Call Now (7004875135)
+            </a>
+            <!-- WhatsApp Link -->
+            <a href="https://wa.me/917004875135?text=Happy%20Birthday%20Shruti!%20Choti%20Panda%20unlocked%20the%20surprise%20🎂" target="_blank" class="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl shadow-md flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition">
+              <span>💬</span> WhatsApp Wish
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL: Oops Wait Karo (With Live Real-Time Ticking Countdown) -->
+  <div id="waitModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl pop-in">
+      <div class="text-5xl mb-3">🐼⏳</div>
+      <h3 class="text-xl font-black text-gray-800 mb-1">Oops! Wait karo!</h3>
+      <p class="text-xs text-pink-600 font-semibold mb-4">
+        Aaj 5th November nahi hai! Surprise tabhi open hoga:
+      </p>
+
+      <!-- Live Countdown Card inside Modal -->
+      <div class="grid grid-cols-4 gap-2 bg-pink-50 p-3 rounded-2xl border border-pink-100 mb-4">
+        <div class="bg-white p-2 rounded-xl shadow-xs">
+          <span id="daysCount" class="block text-xl font-black text-pink-600">00</span>
+          <span class="text-[10px] text-gray-400 font-bold uppercase">Days</span>
+        </div>
+        <div class="bg-white p-2 rounded-xl shadow-xs">
+          <span id="hoursCount" class="block text-xl font-black text-pink-600">00</span>
+          <span class="text-[10px] text-gray-400 font-bold uppercase">Hours</span>
+        </div>
+        <div class="bg-white p-2 rounded-xl shadow-xs">
+          <span id="minsCount" class="block text-xl font-black text-pink-600">00</span>
+          <span class="text-[10px] text-gray-400 font-bold uppercase">Mins</span>
+        </div>
+        <div class="bg-white p-2 rounded-xl shadow-xs">
+          <span id="secsCount" class="block text-xl font-black text-pink-600">00</span>
+          <span class="text-[10px] text-gray-400 font-bold uppercase">Secs</span>
+        </div>
+      </div>
+
+      <p class="text-xs text-gray-500 italic mb-5">
+        "Sabar ka phal meetha hota hai, Choti Panda! 🎋"
+      </p>
+
+      <button onclick="closeModal('waitModal')" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-xl shadow-md active:scale-95 transition">
+        Theek hai, wait karungi 🥺
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL: Not Birthday Modal -->
+  <div id="notBirthdayModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl pop-in">
+      <div class="text-5xl mb-3">😜</div>
+      <h3 class="text-xl font-black text-gray-800 mb-2">Arey re!</h3>
+      <p class="text-sm text-gray-600 mb-5">
+        Jab birthday hi nahi hai toh yahan kya kar rahi ho? 5th November aane do!
+      </p>
+      <button onclick="closeModal('notBirthdayModal')" class="w-full bg-gray-800 hover:bg-black text-white font-bold py-3 rounded-xl shadow-md active:scale-95 transition">
+        Ok bye! 👋
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL: Intruder Alert -->
+  <div id="intruderModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl pop-in">
+      <div class="text-5xl mb-3 animate-spin">🤨🚨</div>
+      <h3 class="text-2xl font-black text-rose-600 mb-2">Who are you?!</h3>
+      <p class="text-sm text-gray-600 mb-5">
+        Intruders not allowed! Galat jawab hai. Only Shruti knows the right answer! Try again!
+      </p>
+      <button onclick="closeModal('intruderModal')" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 rounded-xl shadow-md active:scale-95 transition">
+        Wapas try karo 🙈
+      </button>
+    </div>
+  </div>
+
+  <!-- Secret Developer Toast -->
+  <div id="secretToast" class="fixed bottom-6 bg-gray-900/90 text-white text-xs px-4 py-2 rounded-full shadow-lg pointer-events-none transition-all duration-300 opacity-0 transform translate-y-4 z-50">
+    🧪 Secret preview mode ON! Gate bypassed.
+  </div>
+
+  <script>
+    let previewMode = false;
+    let secretTapCount = 0;
+    let secretTapTimer = null;
+    let noAttempts = 0;
+    let isBgmPlaying = false;
+
+    // Real MP3 Background Music Controller
+    function toggleSoundtrack() {
+      const audio = document.getElementById('softAudio');
+      const btn = document.getElementById('bgmBtn');
+      
+      if (isBgmPlaying) {
+        audio.pause();
+        isBgmPlaying = false;
+        btn.innerText = '🎵 Music: Off';
+      } else {
+        audio.play().then(() => {
+          isBgmPlaying = true;
+          btn.innerText = '🎶 Music: On';
+        }).catch(err => {
+          console.log("Audio play blocked by browser:", err);
+        });
+      }
+    }
+
+    // Secret Easter Egg Trigger (Tap Panda Logo 5 Times)
+    function handleSecretTap() {
+      secretTapCount++;
+      clearTimeout(secretTapTimer);
+      secretTapTimer = setTimeout(() => {
+        secretTapCount = 0;
+      }, 2000);
+
+      if (secretTapCount >= 5) {
+        previewMode = true;
+        secretTapCount = 0;
+        showToast("🧪 Secret preview mode ON! Gate bypassed.");
+        if (!document.getElementById('gate1Card').classList.contains('hidden')) {
+          document.getElementById('gate1Card').classList.add('hidden');
+          document.getElementById('gate2Card').classList.remove('hidden');
+        }
+      }
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('secretToast');
+      t.innerText = msg;
+      t.classList.remove('opacity-0', 'translate-y-4');
+      setTimeout(() => {
+        t.classList.add('opacity-0', 'translate-y-4');
+      }, 2500);
+    }
+
+    // Gate 1: Birthday Check Logic
+    function verifyBirthday(isYes) {
+      if (!isYes) {
+        document.getElementById('notBirthdayModal').classList.remove('hidden');
+        return;
+      }
+
+      const today = new Date();
+      const isNov5 = (today.getMonth() === 10 && today.getDate() === 5); // Month 10 = Nov
+
+      if (isNov5 || previewMode) {
+        document.getElementById('gate1Card').classList.add('hidden');
+        document.getElementById('gate2Card').classList.remove('hidden');
+      } else {
+        updateLiveCountdown();
+        document.getElementById('waitModal').classList.remove('hidden');
+      }
+    }
+
+    function updateLiveCountdown() {
+      const now = new Date();
+      let targetYear = now.getFullYear();
+      let targetDate = new Date(targetYear, 10, 5, 0, 0, 0);
+
+      if (now > targetDate) {
+        targetDate = new Date(targetYear + 1, 10, 5, 0, 0, 0);
+      }
+
+      const diff = targetDate - now;
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const m = Math.floor((diff / 1000 / 60) % 60);
+      const s = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('daysCount').innerText = String(d).padStart(2, '0');
+      document.getElementById('hoursCount').innerText = String(h).padStart(2, '0');
+      document.getElementById('minsCount').innerText = String(m).padStart(2, '0');
+      document.getElementById('secsCount').innerText = String(s).padStart(2, '0');
+    }
+    setInterval(updateLiveCountdown, 1000);
+
+    // Gate 2: Nickname Security Quiz
+    function checkAnswer(ans) {
+      if (ans === 'choti panda') {
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+        
+        document.getElementById('gate2Card').classList.add('hidden');
+        // Unlocks Step 1: Cake First!
+        document.getElementById('stepCake').classList.remove('hidden');
+        
+        // Auto-start soft MP3 background music
+        if (!isBgmPlaying) toggleSoundtrack();
+      } else {
+        document.getElementById('intruderModal').classList.remove('hidden');
+      }
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    // Sequential Step Navigation (Baari-Baari Guided Flow)
+    function goToStep(stepName) {
+      ['Cake', 'Memories', 'Letter', 'Call'].forEach(s => {
+        document.getElementById('step' + s).classList.add('hidden');
+      });
+      const nextEl = document.getElementById('step' + stepName);
+      nextEl.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Candle Interactions
+    function extinguishCandle(candleEl) {
+      const flame = candleEl.querySelector('.flame');
+      if (flame && flame.style.display !== 'none') {
+        flame.style.display = 'none';
+        
+        const smoke = document.createElement('div');
+        smoke.className = 'smoke';
+        candleEl.appendChild(smoke);
+        setTimeout(() => smoke.remove(), 1200);
+
+        confetti({ particleCount: 30, spread: 50, origin: { y: 0.5 } });
+      }
+    }
+
+    function blowAllCandles() {
+      document.querySelectorAll('.candle').forEach(c => extinguishCandle(c));
+      confetti({ particleCount: 200, spread: 90, origin: { y: 0.6 } });
+      document.getElementById('candleInstruction').innerText = '🎉 All candles blown! Big wish granted! 🎶';
+      
+      // Pause soft background music and play Cake Birthday Song
+      const bgAudio = document.getElementById('softAudio');
+      const hbdAudio = document.getElementById('hbdAudio');
+      
+      if (bgAudio) {
+        bgAudio.pause();
+        isBgmPlaying = false;
+        document.getElementById('bgmBtn').innerText = '🎵 Music: Off';
+      }
+      
+      if (hbdAudio) {
+        hbdAudio.currentTime = 0;
+        hbdAudio.play().catch(e => console.log("HBD audio blocked:", e));
+      }
+    }
+
+    // Step 4: Call Decision & Runaway Button Logic
+    function handleCallDecision(isYes) {
+      if (isYes) {
+        confetti({ particleCount: 200, spread: 100, origin: { y: 0.5 } });
+        document.getElementById('callArena').classList.add('hidden');
+        document.getElementById('callSuccessBox').classList.remove('hidden');
+        document.getElementById('callPromptTitle').innerText = 'Yayyy! You said YES! 🎉💖';
+        document.getElementById('pleadingSubtitle').innerText = 'Ab call bhi lagao jaldi! 🙈';
+      } else {
+        noAttempts++;
+        const sub = document.getElementById('pleadingSubtitle');
+        const yesBtn = document.getElementById('callYesBtn');
+        const noBtn = document.getElementById('runawayBtn');
+
+        // Yes button grows bigger
+        yesBtn.style.transform = `scale(${1 + noAttempts * 0.12})`;
+
+        if (noAttempts === 1) {
+          sub.innerText = "Please karo na 🥺👉👈";
+        } else if (noAttempts === 2) {
+          sub.innerText = "Aise mat karo please karo na 😭💔";
+        } else if (noAttempts === 3) {
+          sub.innerText = "Pakka na? Ek call to banta hai na! 😤";
+        } else {
+          sub.innerText = "Hehe ab No click karke dikhao! 😜🏃💨";
+          makeButtonRunaway(noBtn);
+        }
+      }
+    }
+
+    function makeButtonRunaway(btn) {
+      btn.style.position = 'absolute';
+      const dodge = () => {
+        const parent = document.getElementById('callArena');
+        const maxX = parent.clientWidth - btn.clientWidth - 10;
+        const maxY = parent.clientHeight - btn.clientHeight - 10;
+        
+        const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+        const randomY = Math.max(10, Math.floor(Math.random() * maxY));
+        
+        btn.style.left = `${randomX}px`;
+        btn.style.top = `${randomY}px`;
+      };
+
+      btn.onmouseover = dodge;
+      btn.ontouchstart = (e) => {
+        e.preventDefault();
+        dodge();
+      };
+      dodge();
+    }
+  </script>
+</body>
+</html>
