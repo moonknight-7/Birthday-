@@ -21,11 +21,12 @@
       background: linear-gradient(135deg, #ffeef5 0%, #fff0f5 50%, #f3e8ff 100%);
       min-height: 100vh;
       overflow-x: hidden;
+      position: relative;
     }
     .bg-bubble {
       position: fixed;
       border-radius: 50%;
-      filter: blur(40px);
+      filter: blur(50px);
       z-index: 0;
       pointer-events: none;
       animation: floatSlow 12s infinite alternate ease-in-out;
@@ -68,12 +69,38 @@
       0% { transform: scale(0.85); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
     }
+    /* Screen Tap Sparkle Element */
+    .click-sparkle {
+      position: fixed;
+      pointer-events: none;
+      font-size: 1.25rem;
+      z-index: 9999;
+      animation: flyFade 0.75s forwards ease-out;
+    }
+    @keyframes flyFade {
+      0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+      100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.3) rotate(45deg); opacity: 0; }
+    }
+    /* Full-Screen Runaway Button */
     #runawayBtn {
-      transition: top 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), left 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: top 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), left 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    /* Interactive Envelope Styling */
+    .envelope-box {
+      perspective: 800px;
+      cursor: pointer;
+    }
+    .envelope-flap {
+      transform-origin: top;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .envelope-open .envelope-flap {
+      transform: rotateX(180deg);
+      z-index: 1;
     }
   </style>
 </head>
-<body class="relative text-gray-800 flex flex-col justify-between" onclick="ensureMusicPlaying()">
+<body class="relative text-gray-800 flex flex-col justify-between" onclick="createTapSparkles(event); ensureMusicPlaying();">
 
   <!-- MP3 Audio Elements -->
   <audio id="softAudio" loop src="bgm.mp3" preload="auto"></audio>
@@ -83,9 +110,9 @@
   <div class="bg-bubble w-72 h-72 bg-pink-200/50 top-[-50px] left-[-50px]"></div>
   <div class="bg-bubble w-96 h-96 bg-purple-200/40 bottom-[-50px] right-[-50px]"></div>
 
-  <!-- Header (Clean without any music button) -->
+  <!-- Header -->
   <header class="relative z-10 w-full max-w-4xl mx-auto px-4 py-4 flex justify-center sm:justify-start items-center">
-    <div id="secretLogo" onclick="handleSecretTap()" class="flex items-center gap-2 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-sm border border-pink-100 cursor-pointer select-none">
+    <div id="secretLogo" onclick="handleSecretTap()" class="flex items-center gap-2 bg-white/70 backdrop-blur-md px-4 py-2 rounded-full shadow-sm border border-pink-100 cursor-pointer select-none">
       <span class="text-2xl animate-bounce">🐼</span>
       <span class="font-bold text-sm text-pink-600 tracking-wide">Special for Shruti</span>
     </div>
@@ -95,8 +122,8 @@
   <main class="relative z-10 w-full max-w-xl mx-auto px-4 flex-1 flex flex-col justify-center items-center py-6">
 
     <!-- GATE 1: Initial Birthday Check -->
-    <div id="gate1Card" class="w-full bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-pink-100 text-center pop-in">
-      <div class="w-20 h-20 mx-auto mb-4 bg-pink-100 rounded-full flex items-center justify-center text-4xl shadow-inner">
+    <div id="gate1Card" class="w-full bg-white/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/60 text-center pop-in">
+      <div class="w-20 h-20 mx-auto mb-4 bg-pink-100/80 rounded-full flex items-center justify-center text-4xl shadow-inner">
         🎂
       </div>
       <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-2">
@@ -110,15 +137,15 @@
         <button onclick="verifyBirthday(true)" class="flex-1 max-w-[150px] bg-gradient-to-r from-pink-500 to-rose-400 hover:from-pink-600 hover:to-rose-500 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg shadow-pink-200 hover:scale-105 active:scale-95 transition">
           Yes 🎂
         </button>
-        <button onclick="verifyBirthday(false)" class="flex-1 max-w-[150px] bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3.5 px-6 rounded-2xl border border-gray-200 active:scale-95 transition">
+        <button onclick="verifyBirthday(false)" class="flex-1 max-w-[150px] bg-gray-100/80 hover:bg-gray-200 text-gray-700 font-bold py-3.5 px-6 rounded-2xl border border-gray-200 active:scale-95 transition">
           No 🙈
         </button>
       </div>
     </div>
 
     <!-- GATE 2: Nickname Security Quiz -->
-    <div id="gate2Card" class="w-full bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-pink-100 text-center hidden pop-in">
-      <div class="w-20 h-20 mx-auto mb-4 bg-purple-100 rounded-full flex items-center justify-center text-4xl shadow-inner">
+    <div id="gate2Card" class="w-full bg-white/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/60 text-center hidden pop-in">
+      <div class="w-20 h-20 mx-auto mb-4 bg-purple-100/80 rounded-full flex items-center justify-center text-4xl shadow-inner">
         🔐
       </div>
       <div class="inline-block bg-pink-100 text-pink-600 font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider mb-2">
@@ -132,16 +159,16 @@
       </p>
 
       <div class="grid grid-cols-2 gap-3 max-w-md mx-auto">
-        <button onclick="checkAnswer('panda')" class="bg-pink-50 hover:bg-pink-100 text-pink-700 font-bold py-3.5 px-4 rounded-2xl border border-pink-200 hover:scale-102 active:scale-95 transition">
+        <button onclick="checkAnswer('panda')" class="bg-pink-50/80 hover:bg-pink-100 text-pink-700 font-bold py-3.5 px-4 rounded-2xl border border-pink-200 hover:scale-102 active:scale-95 transition">
           panda
         </button>
-        <button onclick="checkAnswer('o+')" class="bg-pink-50 hover:bg-pink-100 text-pink-700 font-bold py-3.5 px-4 rounded-2xl border border-pink-200 hover:scale-102 active:scale-95 transition">
+        <button onclick="checkAnswer('o+')" class="bg-pink-50/80 hover:bg-pink-100 text-pink-700 font-bold py-3.5 px-4 rounded-2xl border border-pink-200 hover:scale-102 active:scale-95 transition">
           o+
         </button>
-        <button onclick="checkAnswer('shruti')" class="bg-pink-50 hover:bg-pink-100 text-pink-700 font-bold py-3.5 px-4 rounded-2xl border border-pink-200 hover:scale-102 active:scale-95 transition">
+        <button onclick="checkAnswer('shruti')" class="bg-pink-50/80 hover:bg-pink-100 text-pink-700 font-bold py-3.5 px-4 rounded-2xl border border-pink-200 hover:scale-102 active:scale-95 transition">
           shruti
         </button>
-        <button onclick="checkAnswer('choti panda')" class="bg-pink-50 hover:bg-pink-100 text-pink-700 font-bold py-3.5 px-4 rounded-2xl border border-pink-200 hover:scale-102 active:scale-95 transition">
+        <button onclick="checkAnswer('choti panda')" class="bg-pink-50/80 hover:bg-pink-100 text-pink-700 font-bold py-3.5 px-4 rounded-2xl border border-pink-200 hover:scale-102 active:scale-95 transition">
           choti panda
         </button>
       </div>
@@ -164,7 +191,7 @@
         </p>
       </div>
 
-      <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-pink-100 flex flex-col items-center">
+      <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/60 flex flex-col items-center">
         <!-- Cake Graphic -->
         <div class="relative w-64 h-56 flex flex-col items-center justify-end mb-6 select-none">
           <div class="flex gap-6 mb-1 z-20">
@@ -209,7 +236,7 @@
       </div>
     </div>
 
-    <!-- STEP 2: MEMORIES STAGE (.jpeg format) -->
+    <!-- STEP 2: MEMORIES STAGE -->
     <div id="stepMemories" class="w-full flex flex-col gap-6 hidden pop-in">
       <div class="text-center pt-2">
         <span class="inline-block bg-purple-100 text-purple-600 font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-widest mb-2">
@@ -223,11 +250,11 @@
         </p>
       </div>
 
-      <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-pink-100">
+      <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/60">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
           
           <!-- Photo 1 (.jpeg) -->
-          <div class="bg-white p-4 pb-6 rounded-2xl shadow-md border border-gray-100 rotate-[-2deg] hover:rotate-0 transition duration-300">
+          <div class="bg-white/90 p-4 pb-6 rounded-2xl shadow-lg border border-gray-100 rotate-[-2deg] hover:rotate-0 transition duration-300">
             <div class="w-full h-56 rounded-xl overflow-hidden bg-gray-100 shadow-inner">
               <img src="pic1.jpeg" alt="Memory 1" class="w-full h-full object-cover">
             </div>
@@ -235,7 +262,7 @@
           </div>
 
           <!-- Photo 2 (.jpeg) -->
-          <div class="bg-white p-4 pb-6 rounded-2xl shadow-md border border-gray-100 rotate-[2deg] hover:rotate-0 transition duration-300">
+          <div class="bg-white/90 p-4 pb-6 rounded-2xl shadow-lg border border-gray-100 rotate-[2deg] hover:rotate-0 transition duration-300">
             <div class="w-full h-56 rounded-xl overflow-hidden bg-gray-100 shadow-inner">
               <img src="pic2.jpeg" alt="Memory 2" class="w-full h-full object-cover">
             </div>
@@ -244,7 +271,6 @@
 
         </div>
 
-        <!-- Next Button to Step 3 -->
         <div class="flex justify-center">
           <button onclick="goToStep('Letter')" class="w-full max-w-xs bg-pink-600 hover:bg-pink-700 text-white font-extrabold py-3.5 px-6 rounded-2xl shadow-lg shadow-pink-200 flex items-center justify-center gap-2 hover:scale-102 active:scale-95 transition">
             Next: Read Letter 💌 &rarr;
@@ -253,34 +279,50 @@
       </div>
     </div>
 
-    <!-- STEP 3: LETTER STAGE -->
+    <!-- STEP 3: LETTER STAGE (Envelope + Typewriter) -->
     <div id="stepLetter" class="w-full flex flex-col gap-6 hidden pop-in">
       <div class="text-center pt-2">
         <span class="inline-block bg-pink-100 text-pink-600 font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-widest mb-2">
           Step 3 • From The Heart 💌
         </span>
         <h2 class="text-3xl font-black text-gray-900 tracking-tight">
-          A Letter For You 📜
+          A Special Delivery 📜
         </h2>
         <p class="text-gray-600 text-sm mt-1">
-          Thoda emotional aur thoda sach!
+          Aapke liye ek personal chitthi aayi hai!
         </p>
       </div>
 
-      <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-pink-100">
-        <div class="border-2 border-dashed border-pink-200 p-6 sm:p-8 rounded-2xl bg-pink-50/40 mb-8">
+      <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/60 flex flex-col items-center">
+        
+        <!-- Interactive Envelope -->
+        <div id="envelopeWrapper" onclick="openEnvelope()" class="envelope-box relative w-full max-w-sm h-52 bg-pink-200 rounded-2xl shadow-lg border border-pink-300 flex flex-col items-center justify-center transition-transform hover:scale-102 active:scale-95 mb-4">
+          <!-- Flap Triangle -->
+          <div class="envelope-flap absolute top-0 left-0 right-0 h-24 bg-pink-300 rounded-t-2xl shadow-sm border-b border-pink-400/40 flex items-center justify-center">
+            <span class="text-2xl">💌</span>
+          </div>
+          <!-- Envelope Center Seal -->
+          <div class="z-10 text-center px-4">
+            <div class="w-12 h-12 mx-auto bg-rose-500 text-white rounded-full flex items-center justify-center text-xl shadow-md mb-2">
+              🐼
+            </div>
+            <p class="text-xs font-bold text-pink-700 uppercase tracking-widest">
+              Tap to open Choti Panda's Letter ✨
+            </p>
+          </div>
+        </div>
+
+        <!-- Unfolded Letter Card (Hidden until envelope clicked) -->
+        <div id="unfoldedLetter" class="w-full border-2 border-dashed border-pink-200/80 p-6 sm:p-8 rounded-2xl bg-pink-50/60 min-h-[220px] mb-6 hidden pop-in">
           <h3 class="handwriting text-3xl font-bold text-pink-600 mb-4">Dear Choti Panda,</h3>
-          <p class="handwriting text-2xl text-gray-700 leading-relaxed space-y-4">
-            Happy Birthday! 🎂✨ May your year be as cheerful, peaceful, and wonderful as you are. 
-            Keep smiling, keep eating your bamboo in peace, aur hamesha aisi hi cute aur unique rehna!
-          </p>
-          <div class="mt-6 text-right">
+          <p id="typewriterBody" class="handwriting text-2xl text-gray-700 leading-relaxed min-h-[100px]"></p>
+          <div id="letterSignature" class="mt-6 text-right opacity-0 transition-opacity duration-700">
             <span class="handwriting text-2xl font-bold text-gray-800">— With lots of wishes & smiles ✨</span>
           </div>
         </div>
 
-        <!-- Next Button to Step 4 -->
-        <div class="flex justify-center">
+        <!-- Next Button to Call (Visible after letter is opened) -->
+        <div id="letterNextBtn" class="w-full flex justify-center hidden">
           <button onclick="goToStep('Call')" class="w-full max-w-xs bg-gradient-to-r from-pink-600 to-rose-500 hover:from-pink-700 hover:to-rose-600 text-white font-extrabold py-3.5 px-6 rounded-2xl shadow-lg shadow-pink-200 flex items-center justify-center gap-2 hover:scale-102 active:scale-95 transition">
             Next: Ek Final Sawaal... 📞 &rarr;
           </button>
@@ -288,7 +330,7 @@
       </div>
     </div>
 
-    <!-- STEP 4: CALL SECTION WITH RUNAWAY BUTTON -->
+    <!-- STEP 4: CALL SECTION (Full-Screen Evasion) -->
     <div id="stepCall" class="w-full flex flex-col gap-6 hidden pop-in">
       <div class="text-center pt-2">
         <span class="inline-block bg-rose-100 text-rose-600 font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-widest mb-2">
@@ -296,7 +338,7 @@
         </span>
       </div>
 
-      <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-pink-100 text-center relative overflow-hidden">
+      <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/60 text-center relative overflow-hidden">
         <span class="text-5xl block mb-3">📞💖</span>
         <h2 id="callPromptTitle" class="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-2">
           Ek aakhri sawaal... Do you wanna call me?
@@ -317,7 +359,7 @@
         </div>
 
         <!-- Success Reveal Box -->
-        <div id="callSuccessBox" class="mt-6 p-6 bg-emerald-50 border border-emerald-200 rounded-2xl hidden pop-in">
+        <div id="callSuccessBox" class="mt-6 p-6 bg-emerald-50/80 border border-emerald-200 rounded-2xl hidden pop-in">
           <div class="text-4xl mb-2">🥳📞✨</div>
           <h3 class="text-xl font-bold text-emerald-800 mb-1">
             Mission Successful!
@@ -342,7 +384,7 @@
 
   <!-- MODALS -->
   <div id="waitModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl pop-in">
+    <div class="bg-white/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl pop-in">
       <div class="text-5xl mb-3">🐼⏳</div>
       <h3 class="text-xl font-black text-gray-800 mb-1">Oops! Wait karo!</h3>
       <p class="text-xs text-pink-600 font-semibold mb-4">
@@ -379,7 +421,7 @@
   </div>
 
   <div id="notBirthdayModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl pop-in">
+    <div class="bg-white/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl pop-in">
       <div class="text-5xl mb-3">😜</div>
       <h3 class="text-xl font-black text-gray-800 mb-2">Arey re!</h3>
       <p class="text-sm text-gray-600 mb-5">
@@ -392,7 +434,7 @@
   </div>
 
   <div id="intruderModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl pop-in">
+    <div class="bg-white/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl pop-in">
       <div class="text-5xl mb-3 animate-spin">🤨🚨</div>
       <h3 class="text-2xl font-black text-rose-600 mb-2">Who are you?!</h3>
       <p class="text-sm text-gray-600 mb-5">
@@ -415,6 +457,30 @@
     let secretTapTimer = null;
     let noAttempts = 0;
     let isBgmPlaying = false;
+    let hasEnvelopeOpened = false;
+
+    // Feature 3: Tap Sparkle Particles
+    function createTapSparkles(e) {
+      const sparkles = ['✨', '💖', '⭐', '🌸'];
+      const x = e.clientX || (e.touches && e.touches[0].clientX) || window.innerWidth / 2;
+      const y = e.clientY || (e.touches && e.touches[0].clientY) || window.innerHeight / 2;
+
+      for (let i = 0; i < 4; i++) {
+        const span = document.createElement('span');
+        span.className = 'click-sparkle';
+        span.innerText = sparkles[Math.floor(Math.random() * sparkles.length)];
+        span.style.left = `${x}px`;
+        span.style.top = `${y}px`;
+
+        const dx = (Math.random() - 0.5) * 80 + 'px';
+        const dy = (Math.random() - 0.5) * 80 + 'px';
+        span.style.setProperty('--dx', dx);
+        span.style.setProperty('--dy', dy);
+
+        document.body.appendChild(span);
+        setTimeout(() => span.remove(), 750);
+      }
+    }
 
     // Continuous Background Music Autoplay Helper
     function ensureMusicPlaying() {
@@ -524,6 +590,42 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // Feature 2: Interactive Envelope Open Animation
+    function openEnvelope() {
+      if (hasEnvelopeOpened) return;
+      hasEnvelopeOpened = true;
+
+      confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+
+      const env = document.getElementById('envelopeWrapper');
+      env.classList.add('envelope-open');
+
+      setTimeout(() => {
+        env.style.display = 'none';
+        document.getElementById('unfoldedLetter').classList.remove('hidden');
+        document.getElementById('letterNextBtn').classList.remove('hidden');
+        startTypewriterLetter();
+      }, 500);
+    }
+
+    // Feature 5: Typewriter Letter
+    function startTypewriterLetter() {
+      const text = "Happy Birthday! 🎂✨ May your year be as cheerful, peaceful, and wonderful as you are. Keep smiling, keep eating your bamboo in peace, aur hamesha aisi hi cute aur unique rehna!";
+      const container = document.getElementById('typewriterBody');
+      container.innerText = "";
+      let index = 0;
+
+      const typeInterval = setInterval(() => {
+        if (index < text.length) {
+          container.innerText += text.charAt(index);
+          index++;
+        } else {
+          clearInterval(typeInterval);
+          document.getElementById('letterSignature').classList.remove('opacity-0');
+        }
+      }, 40);
+    }
+
     // Candle Interactions
     function extinguishCandle(candleEl) {
       ensureMusicPlaying();
@@ -548,20 +650,18 @@
       const bgAudio = document.getElementById('softAudio');
       const hbdAudio = document.getElementById('hbdAudio');
       
-      // Pause background music to play Cake Birthday Song
       if (bgAudio) bgAudio.pause();
       if (hbdAudio) {
         hbdAudio.currentTime = 0;
         hbdAudio.play().catch(e => console.log("HBD audio blocked:", e));
         
-        // When birthday song finishes, resume soft BGM
         hbdAudio.onended = () => {
           if (bgAudio) bgAudio.play().catch(() => {});
         };
       }
     }
 
-    // Step 4: Call Decision & Runaway Button Logic
+    // Step 4: Call Decision & Full-Screen Runaway Button
     function handleCallDecision(isYes) {
       ensureMusicPlaying();
       if (isYes) {
@@ -570,6 +670,9 @@
         document.getElementById('callSuccessBox').classList.remove('hidden');
         document.getElementById('callPromptTitle').innerText = 'Yayyy! You said YES! 🎉💖';
         document.getElementById('pleadingSubtitle').innerText = 'Ab call bhi lagao jaldi! 🙈';
+        
+        const noBtn = document.getElementById('runawayBtn');
+        noBtn.style.display = 'none';
       } else {
         noAttempts++;
         const sub = document.getElementById('pleadingSubtitle');
@@ -586,21 +689,26 @@
           sub.innerText = "Pakka na? Ek call to banta hai na! 😤";
         } else {
           sub.innerText = "Hehe ab No click karke dikhao! 😜🏃💨";
-          makeButtonRunaway(noBtn);
+          makeButtonFullRunaway(noBtn);
         }
       }
     }
 
-    function makeButtonRunaway(btn) {
-      btn.style.position = 'absolute';
+    // Full-Screen Evasion Logic
+    function makeButtonFullRunaway(btn) {
+      btn.style.position = 'fixed';
+      btn.style.zIndex = '9999';
+
       const dodge = () => {
-        const parent = document.getElementById('callArena');
-        const maxX = parent.clientWidth - btn.clientWidth - 10;
-        const maxY = parent.clientHeight - btn.clientHeight - 10;
-        
-        const randomX = Math.max(10, Math.floor(Math.random() * maxX));
-        const randomY = Math.max(10, Math.floor(Math.random() * maxY));
-        
+        const btnWidth = btn.offsetWidth || 100;
+        const btnHeight = btn.offsetHeight || 50;
+
+        const maxW = window.innerWidth - btnWidth - 20;
+        const maxH = window.innerHeight - btnHeight - 20;
+
+        const randomX = Math.max(20, Math.floor(Math.random() * maxW));
+        const randomY = Math.max(20, Math.floor(Math.random() * maxH));
+
         btn.style.left = `${randomX}px`;
         btn.style.top = `${randomY}px`;
       };
