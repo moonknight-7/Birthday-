@@ -69,7 +69,7 @@
       100% { transform: scale(1); opacity: 1; }
     }
     #runawayBtn {
-      transition: top 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), left 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: top 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), left 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     /* Poppable Floating Balloons */
@@ -96,9 +96,6 @@
     .envelope-flap {
       transform-origin: top center;
       transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .letter-paper {
-      transition: transform 0.7s cubic-bezier(0.34, 1.3, 0.64, 1), opacity 0.5s ease;
     }
   </style>
 </head>
@@ -355,7 +352,7 @@
       </div>
     </div>
 
-    <!-- STEP 4: CALL SECTION (OPTION 3 LOCKED) -->
+    <!-- STEP 4: CALL SECTION (MOBILE FULL-SCREEN RUNAWAY) -->
     <div id="stepCall" class="w-full flex flex-col gap-6 hidden pop-in">
       <div class="text-center pt-2">
         <span class="inline-block bg-rose-100 text-rose-600 font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-widest mb-2">
@@ -660,7 +657,7 @@
       }
     }
 
-    // Step 4: Call Decision & Runaway Button Logic
+    // Step 4: Call Decision & Mobile-Optimized Runaway Logic
     function handleCallDecision(isYes) {
       ensureMusicPlaying();
       if (isYes) {
@@ -669,6 +666,10 @@
         document.getElementById('callSuccessBox').classList.remove('hidden');
         document.getElementById('callPromptTitle').innerText = 'Good girl! Protocol accepted! 🎉📞';
         document.getElementById('pleadingSubtitle').innerText = 'Dialer open hai, dial button press karo jaldi! 🙈';
+        
+        // Agar pehle No button bhaag raha tha toh hide kar dein
+        const noBtn = document.getElementById('runawayBtn');
+        if (noBtn) noBtn.style.display = 'none';
       } else {
         noAttempts++;
         const sub = document.getElementById('pleadingSubtitle');
@@ -691,25 +692,36 @@
       }
     }
 
+    // Mobile Viewport Safe Runaway Function
     function makeButtonRunaway(btn) {
-      btn.style.position = 'absolute';
-      const dodge = () => {
-        const parent = document.getElementById('callArena');
-        const maxX = parent.clientWidth - btn.clientWidth - 10;
-        const maxY = parent.clientHeight - btn.clientHeight - 10;
-        
-        const randomX = Math.max(10, Math.floor(Math.random() * maxX));
-        const randomY = Math.max(10, Math.floor(Math.random() * maxY));
-        
+      btn.style.position = 'fixed';
+      btn.style.zIndex = '9999';
+
+      const dodge = (e) => {
+        if (e) e.preventDefault();
+
+        // Safe bounds inside phone screen
+        const safePadding = 20;
+        const topMargin = 70;
+        const bottomMargin = 80;
+
+        const maxX = window.innerWidth - btn.offsetWidth - safePadding;
+        const maxY = window.innerHeight - btn.offsetHeight - bottomMargin;
+
+        const randomX = Math.floor(Math.random() * (maxX - safePadding + 1)) + safePadding;
+        const randomY = Math.floor(Math.random() * (maxY - topMargin + 1)) + topMargin;
+
         btn.style.left = `${randomX}px`;
         btn.style.top = `${randomY}px`;
       };
 
+      // Events for both desktop and mobile
       btn.onmouseover = dodge;
-      btn.ontouchstart = (e) => {
-        e.preventDefault();
-        dodge();
+      btn.ontouchstart = dodge;
+      btn.onclick = (e) => {
+        dodge(e);
       };
+
       dodge();
     }
   </script>
