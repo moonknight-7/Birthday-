@@ -62,87 +62,6 @@
       100% { opacity: 0; transform: translateY(-40px) scale(2.5); }
     }
     .pop-in {
-      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32Panda badge par 5-tap wala secret trigger hata diya gaya hai taaki wo galti se bhi bypass na kar sake.
-
-### Naya Secret Preview Mode:
-Dev/Preview mode trigger karne ke liye ab do bulletproof tarike set hain jo sirf aapko pata honge:
-
-1. **URL Parameter (Sabse simple aur clean):**
-   * Jab aapko khud check karna ho, URL ke aage bas `?preview=1` ya `?dev=true` laga kar open karein:  
-     `https://moonknight-7.github.io/Birthday-/?preview=1`
-   * Website date gate turant bypass kar degi.
-2. **Hidden Invisible Corner Trigger (Backup):**
-   * Screen ke bilkul **bottom-right corner** me ek invisible 35px ka area hai (jahan koi text/icon nahi hai). Us corner par lagatar 5 baar tap karne se preview mode activate hoga.
-
----
-
-### Complete Final `index.html` Code
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Happy Birthday Shruti! 🎂</title>
-  <!-- Tailwind CSS & Canvas Confetti -->
-  <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
-  <script src="[https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js](https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js)"></script>
-  <link href="[https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Nunito:wght@400;600;700;800;900&display=swap](https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Nunito:wght@400;600;700;800;900&display=swap)" rel="stylesheet">
-
-  <style>
-    * {
-      font-family: 'Nunito', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .handwriting {
-      font-family: 'Caveat', cursive;
-    }
-    body {
-      background: linear-gradient(135deg, #ffeef5 0%, #fff0f5 50%, #f3e8ff 100%);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-    .bg-bubble {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(40px);
-      z-index: 0;
-      pointer-events: none;
-      animation: floatSlow 12s infinite alternate ease-in-out;
-    }
-    @keyframes floatSlow {
-      0% { transform: translateY(0px) scale(1); }
-      100% { transform: translateY(-50px) scale(1.1); }
-    }
-    /* Candle Flame Animation */
-    .flame {
-      background: radial-gradient(ellipse at bottom, #fff 0%, #ffde59 30%, #ff5722 80%);
-      border-radius: 50% 50% 20% 20%;
-      box-shadow: 0 0 15px #ff9800, 0 0 30px #ff5722;
-      animation: flicker 0.15s infinite alternate;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    @keyframes flicker {
-      0% { transform: scale(1) rotate(-2deg); opacity: 0.95; }
-      100% { transform: scale(1.08) rotate(2deg); opacity: 1; }
-    }
-    .smoke {
-      position: absolute;
-      width: 10px;
-      height: 25px;
-      background: rgba(180, 180, 180, 0.6);
-      border-radius: 50%;
-      filter: blur(4px);
-      animation: riseSmoke 1.2s forwards ease-out;
-      pointer-events: none;
-    }
-    @keyframes riseSmoke {
-      0% { opacity: 0.8; transform: translateY(0) scale(1); }
-      100% { opacity: 0; transform: translateY(-40px) scale(2.5); }
-    }
-    .pop-in {
       animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
     @keyframes popIn {
@@ -254,10 +173,10 @@ Dev/Preview mode trigger karne ke liye ab do bulletproof tarike set hain jo sirf
       </div>
     </div>
 
-    <!-- STEP 1: CAKE STAGE (3-LAYER CAKE WITH NAMES + SIDE BALLOONS) -->
+    <!-- STEP 1: CAKE STAGE (3-LAYER CAKE WITH NAMES + BALLOONS) -->
     <div id="stepCake" class="w-full flex flex-col gap-6 hidden pop-in relative">
       
-      <!-- Poppable Balloons (Upper Safe Margins) -->
+      <!-- Poppable Balloons (Safe Margins) -->
       <div class="balloon left-2 -top-6 text-4xl z-30" onclick="popBalloon(this, event)">🎈</div>
       <div class="balloon right-2 -top-6 text-4xl z-30" style="animation-delay: 0.8s;" onclick="popBalloon(this, event)">🎈</div>
       <div class="balloon left-2 top-28 text-3xl z-30 hidden sm:block" style="animation-delay: 1.5s;" onclick="popBalloon(this, event)">🎈</div>
@@ -381,7 +300,7 @@ Dev/Preview mode trigger karne ke liye ab do bulletproof tarike set hain jo sirf
       </div>
     </div>
 
-    <!-- STEP 3: LETTER STAGE (INTERACTIVE ENVELOPE OPENING) -->
+    <!-- STEP 3: LETTER STAGE (INTERACTIVE ENVELOPE) -->
     <div id="stepLetter" class="w-full flex flex-col gap-6 hidden pop-in">
       <div class="text-center pt-2">
         <span class="inline-block bg-pink-100 text-pink-600 font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-widest mb-2">
@@ -436,7 +355,7 @@ Dev/Preview mode trigger karne ke liye ab do bulletproof tarike set hain jo sirf
       </div>
     </div>
 
-    <!-- STEP 4: CALL SECTION (WITH PERSISTENT FLOATING RUNAWAY BUTTON) -->
+    <!-- STEP 4: CALL SECTION (WITH BULLETPROOF RUNAWAY BUTTON) -->
     <div id="stepCall" class="w-full flex flex-col gap-6 hidden pop-in">
       <div class="text-center pt-2">
         <span class="inline-block bg-rose-100 text-rose-600 font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-widest mb-2">
@@ -444,7 +363,7 @@ Dev/Preview mode trigger karne ke liye ab do bulletproof tarike set hain jo sirf
         </span>
       </div>
 
-      <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-pink-100 text-center relative overflow-hidden">
+      <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-pink-100 text-center relative overflow-visible">
         <span class="text-5xl block mb-3">📞💖</span>
         <h2 id="callPromptTitle" class="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-2">
           Ek aakhri sawaal... Do you wanna call me?
@@ -477,7 +396,7 @@ Dev/Preview mode trigger karne ke liye ab do bulletproof tarike set hain jo sirf
             <a href="tel:7004875135" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-md flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition">
               <span>📞</span> Call Now (7004875135)
             </a>
-            <a href="[https://wa.me/917004875135?text=Happy%20Birthday%20Shruti!%20Choti%20Panda%20unlocked%20the%20surprise%20](https://wa.me/917004875135?text=Happy%20Birthday%20Shruti!%20Choti%20Panda%20unlocked%20the%20surprise%20)🎂" target="_blank" class="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl shadow-md flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition">
+            <a href="https://wa.me/917004875135?text=Happy%20Birthday%20Shruti!%20Choti%20Panda%20unlocked%20the%20surprise%20🎂" target="_blank" class="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl shadow-md flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition">
               <span>💬</span> WhatsApp Wish
             </a>
           </div>
@@ -552,21 +471,10 @@ Dev/Preview mode trigger karne ke liye ab do bulletproof tarike set hain jo sirf
     </div>
   </div>
 
-  <!-- INVISIBLE BACKUP TRIGGER (Bottom-Right Corner, completely transparent) -->
-  <div onclick="handleSecretCornerTap()" class="fixed bottom-0 right-0 w-10 h-10 z-50 cursor-default opacity-0 select-none"></div>
-
-  <!-- Secret Developer Toast Notification -->
-  <div id="secretToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900/95 text-white text-xs px-4 py-2 rounded-full shadow-lg pointer-events-none transition-all duration-300 opacity-0 transform translate-y-4 z-50">
-    🧪 Preview Mode: Date Gate Bypassed
-  </div>
-
   <script>
-    // URL Parameter Auto-Bypass (?preview=1 or ?dev=true)
-    const urlParams = new URLSearchParams(window.location.search);
-    let previewMode = urlParams.has('preview') || urlParams.has('dev');
+    // Preview Mode flag (Testing ke liye bypass enabled)
+    let previewMode = true;
     
-    let cornerTapCount = 0;
-    let cornerTapTimer = null;
     let noAttempts = 0;
     let isBgmPlaying = false;
 
@@ -611,34 +519,6 @@ Dev/Preview mode trigger karne ke liye ab do bulletproof tarike set hain jo sirf
       
       env.style.display = 'none';
       letter.classList.remove('hidden');
-    }
-
-    // Invisible Corner Backup Trigger
-    function handleSecretCornerTap() {
-      cornerTapCount++;
-      clearTimeout(cornerTapTimer);
-      cornerTapTimer = setTimeout(() => {
-        cornerTapCount = 0;
-      }, 2000);
-
-      if (cornerTapCount >= 5) {
-        previewMode = true;
-        cornerTapCount = 0;
-        showToast("🧪 Preview Mode Active!");
-        if (!document.getElementById('gate1Card').classList.contains('hidden')) {
-          document.getElementById('gate1Card').classList.add('hidden');
-          document.getElementById('gate2Card').classList.remove('hidden');
-        }
-      }
-    }
-
-    function showToast(msg) {
-      const t = document.getElementById('secretToast');
-      t.innerText = msg;
-      t.classList.remove('opacity-0', 'translate-y-4');
-      setTimeout(() => {
-        t.classList.add('opacity-0', 'translate-y-4');
-      }, 2500);
     }
 
     // Gate 1: Birthday Check Logic
@@ -746,7 +626,7 @@ Dev/Preview mode trigger karne ke liye ab do bulletproof tarike set hain jo sirf
       }
     }
 
-    // Step 4: Call Decision & Floating Runaway Button
+    // Step 4: Call Decision & Persistent Floating Runaway Logic
     function handleCallDecision(isYes) {
       ensureMusicPlaying();
       if (isYes) {
@@ -755,13 +635,17 @@ Dev/Preview mode trigger karne ke liye ab do bulletproof tarike set hain jo sirf
         document.getElementById('callSuccessBox').classList.remove('hidden');
         document.getElementById('callPromptTitle').innerText = 'Yayyy! You said YES! 🎉💖';
         document.getElementById('pleadingSubtitle').innerText = 'Ab call bhi lagao jaldi! 🙈';
+
+        // Final Yes par No button ko clean hide karna
+        const noBtn = document.getElementById('runawayBtn');
+        if (noBtn) noBtn.style.display = 'none';
       } else {
         noAttempts++;
         const sub = document.getElementById('pleadingSubtitle');
         const yesBtn = document.getElementById('callYesBtn');
         const noBtn = document.getElementById('runawayBtn');
 
-        yesBtn.style.transform = `scale(${1 + noAttempts * 0.12})`;
+        yesBtn.style.transform = `scale(${Math.min(1.8, 1 + noAttempts * 0.12)})`;
 
         if (noAttempts === 1) {
           sub.innerText = "Please karo na 🥺👉👈";
@@ -777,35 +661,42 @@ Dev/Preview mode trigger karne ke liye ab do bulletproof tarike set hain jo sirf
       }
     }
 
-    // Full-Screen Floating Runaway Logic (Always visible on screen)
+    // Full-Screen Safe Area Dodge (Screen se bahar ya gayab nahi hoga)
     function makeButtonRunaway(btn) {
       btn.style.position = 'fixed';
-      btn.style.display = 'inline-block';
+      btn.style.display = 'block';
       btn.style.opacity = '1';
       btn.style.visibility = 'visible';
-      btn.style.zIndex = '9999';
-      btn.style.transition = 'top 0.4s ease-out, left 0.4s ease-out';
+      btn.style.zIndex = '99999';
+      btn.style.transition = 'all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)';
 
-      const dodge = () => {
-        const padding = 25;
-        const btnWidth = btn.offsetWidth || 100;
-        const btnHeight = btn.offsetHeight || 45;
+      const dodge = (e) => {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
 
-        const maxX = window.innerWidth - btnWidth - padding;
-        const maxY = window.innerHeight - btnHeight - padding;
+        const winW = window.innerWidth;
+        const winH = window.innerHeight;
+        const btnW = btn.offsetWidth || 90;
+        const btnH = btn.offsetHeight || 45;
 
-        const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
-        const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+        // Viewport padding taaki edges par na kat sake
+        const minX = 25;
+        const minY = 70;
+        const maxX = Math.max(minX, winW - btnW - 25);
+        const maxY = Math.max(minY, winH - btnH - 70);
 
-        btn.style.left = `${randomX}px`;
-        btn.style.top = `${randomY}px`;
+        const newX = Math.floor(minX + Math.random() * (maxX - minX));
+        const newY = Math.floor(minY + Math.random() * (maxY - minY));
+
+        btn.style.left = `${newX}px`;
+        btn.style.top = `${newY}px`;
       };
 
       btn.onmouseover = dodge;
-      btn.ontouchstart = (e) => {
-        e.preventDefault();
-        dodge();
-      };
+      btn.ontouchstart = dodge;
+      btn.onclick = dodge;
 
       dodge();
     }
