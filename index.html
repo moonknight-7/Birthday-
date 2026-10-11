@@ -62,14 +62,92 @@
       100% { opacity: 0; transform: translateY(-40px) scale(2.5); }
     }
     .pop-in {
+      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32Panda badge par 5-tap wala secret trigger hata diya gaya hai taaki wo galti se bhi bypass na kar sake.
+
+### Naya Secret Preview Mode:
+Dev/Preview mode trigger karne ke liye ab do bulletproof tarike set hain jo sirf aapko pata honge:
+
+1. **URL Parameter (Sabse simple aur clean):**
+   * Jab aapko khud check karna ho, URL ke aage bas `?preview=1` ya `?dev=true` laga kar open karein:  
+     `https://moonknight-7.github.io/Birthday-/?preview=1`
+   * Website date gate turant bypass kar degi.
+2. **Hidden Invisible Corner Trigger (Backup):**
+   * Screen ke bilkul **bottom-right corner** me ek invisible 35px ka area hai (jahan koi text/icon nahi hai). Us corner par lagatar 5 baar tap karne se preview mode activate hoga.
+
+---
+
+### Complete Final `index.html` Code
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday Shruti! 🎂</title>
+  <!-- Tailwind CSS & Canvas Confetti -->
+  <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+  <script src="[https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js](https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js)"></script>
+  <link href="[https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Nunito:wght@400;600;700;800;900&display=swap](https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Nunito:wght@400;600;700;800;900&display=swap)" rel="stylesheet">
+
+  <style>
+    * {
+      font-family: 'Nunito', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .handwriting {
+      font-family: 'Caveat', cursive;
+    }
+    body {
+      background: linear-gradient(135deg, #ffeef5 0%, #fff0f5 50%, #f3e8ff 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .bg-bubble {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(40px);
+      z-index: 0;
+      pointer-events: none;
+      animation: floatSlow 12s infinite alternate ease-in-out;
+    }
+    @keyframes floatSlow {
+      0% { transform: translateY(0px) scale(1); }
+      100% { transform: translateY(-50px) scale(1.1); }
+    }
+    /* Candle Flame Animation */
+    .flame {
+      background: radial-gradient(ellipse at bottom, #fff 0%, #ffde59 30%, #ff5722 80%);
+      border-radius: 50% 50% 20% 20%;
+      box-shadow: 0 0 15px #ff9800, 0 0 30px #ff5722;
+      animation: flicker 0.15s infinite alternate;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    @keyframes flicker {
+      0% { transform: scale(1) rotate(-2deg); opacity: 0.95; }
+      100% { transform: scale(1.08) rotate(2deg); opacity: 1; }
+    }
+    .smoke {
+      position: absolute;
+      width: 10px;
+      height: 25px;
+      background: rgba(180, 180, 180, 0.6);
+      border-radius: 50%;
+      filter: blur(4px);
+      animation: riseSmoke 1.2s forwards ease-out;
+      pointer-events: none;
+    }
+    @keyframes riseSmoke {
+      0% { opacity: 0.8; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-40px) scale(2.5); }
+    }
+    .pop-in {
       animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
     @keyframes popIn {
       0% { transform: scale(0.85); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
-    }
-    #runawayBtn {
-      transition: top 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), left 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     /* Poppable Floating Balloons */
@@ -100,15 +178,6 @@
     .letter-paper {
       transition: transform 0.7s cubic-bezier(0.34, 1.3, 0.64, 1), opacity 0.5s ease;
     }
-    .envelope-open .envelope-flap {
-      transform: rotateX(180deg);
-      z-index: 0;
-    }
-    .envelope-open .letter-paper {
-      transform: translateY(-90px);
-      opacity: 1;
-      z-index: 25;
-    }
   </style>
 </head>
 <body class="relative text-gray-800 flex flex-col justify-between" onclick="ensureMusicPlaying()">
@@ -123,7 +192,7 @@
 
   <!-- Header -->
   <header class="relative z-10 w-full max-w-4xl mx-auto px-4 py-4 flex justify-center sm:justify-start items-center">
-    <div id="secretLogo" onclick="handleSecretTap()" class="flex items-center gap-2 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-sm border border-pink-100 cursor-pointer select-none">
+    <div class="flex items-center gap-2 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-sm border border-pink-100 select-none">
       <span class="text-2xl animate-bounce">🐼</span>
       <span class="font-bold text-sm text-pink-600 tracking-wide">Special for Shruti</span>
     </div>
@@ -188,7 +257,7 @@
     <!-- STEP 1: CAKE STAGE (3-LAYER CAKE WITH NAMES + SIDE BALLOONS) -->
     <div id="stepCake" class="w-full flex flex-col gap-6 hidden pop-in relative">
       
-      <!-- Poppable Balloons (Top and Side Placements) -->
+      <!-- Poppable Balloons (Upper Safe Margins) -->
       <div class="balloon left-2 -top-6 text-4xl z-30" onclick="popBalloon(this, event)">🎈</div>
       <div class="balloon right-2 -top-6 text-4xl z-30" style="animation-delay: 0.8s;" onclick="popBalloon(this, event)">🎈</div>
       <div class="balloon left-2 top-28 text-3xl z-30 hidden sm:block" style="animation-delay: 1.5s;" onclick="popBalloon(this, event)">🎈</div>
@@ -367,7 +436,7 @@
       </div>
     </div>
 
-    <!-- STEP 4: CALL SECTION (WITH FULL-SCREEN RUNAWAY BUTTON) -->
+    <!-- STEP 4: CALL SECTION (WITH PERSISTENT FLOATING RUNAWAY BUTTON) -->
     <div id="stepCall" class="w-full flex flex-col gap-6 hidden pop-in">
       <div class="text-center pt-2">
         <span class="inline-block bg-rose-100 text-rose-600 font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-widest mb-2">
@@ -408,7 +477,7 @@
             <a href="tel:7004875135" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-md flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition">
               <span>📞</span> Call Now (7004875135)
             </a>
-            <a href="https://wa.me/917004875135?text=Happy%20Birthday%20Shruti!%20Choti%20Panda%20unlocked%20the%20surprise%20🎂" target="_blank" class="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl shadow-md flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition">
+            <a href="[https://wa.me/917004875135?text=Happy%20Birthday%20Shruti!%20Choti%20Panda%20unlocked%20the%20surprise%20](https://wa.me/917004875135?text=Happy%20Birthday%20Shruti!%20Choti%20Panda%20unlocked%20the%20surprise%20)🎂" target="_blank" class="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl shadow-md flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition">
               <span>💬</span> WhatsApp Wish
             </a>
           </div>
@@ -483,15 +552,21 @@
     </div>
   </div>
 
-  <!-- Secret Developer Toast -->
-  <div id="secretToast" class="fixed bottom-6 bg-gray-900/90 text-white text-xs px-4 py-2 rounded-full shadow-lg pointer-events-none transition-all duration-300 opacity-0 transform translate-y-4 z-50">
-    🧪 Secret preview mode ON! Gate bypassed.
+  <!-- INVISIBLE BACKUP TRIGGER (Bottom-Right Corner, completely transparent) -->
+  <div onclick="handleSecretCornerTap()" class="fixed bottom-0 right-0 w-10 h-10 z-50 cursor-default opacity-0 select-none"></div>
+
+  <!-- Secret Developer Toast Notification -->
+  <div id="secretToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900/95 text-white text-xs px-4 py-2 rounded-full shadow-lg pointer-events-none transition-all duration-300 opacity-0 transform translate-y-4 z-50">
+    🧪 Preview Mode: Date Gate Bypassed
   </div>
 
   <script>
-    let previewMode = false;
-    let secretTapCount = 0;
-    let secretTapTimer = null;
+    // URL Parameter Auto-Bypass (?preview=1 or ?dev=true)
+    const urlParams = new URLSearchParams(window.location.search);
+    let previewMode = urlParams.has('preview') || urlParams.has('dev');
+    
+    let cornerTapCount = 0;
+    let cornerTapTimer = null;
     let noAttempts = 0;
     let isBgmPlaying = false;
 
@@ -538,18 +613,18 @@
       letter.classList.remove('hidden');
     }
 
-    // Secret Easter Egg Trigger (Tap Panda Logo 5 Times)
-    function handleSecretTap() {
-      secretTapCount++;
-      clearTimeout(secretTapTimer);
-      secretTapTimer = setTimeout(() => {
-        secretTapCount = 0;
+    // Invisible Corner Backup Trigger
+    function handleSecretCornerTap() {
+      cornerTapCount++;
+      clearTimeout(cornerTapTimer);
+      cornerTapTimer = setTimeout(() => {
+        cornerTapCount = 0;
       }, 2000);
 
-      if (secretTapCount >= 5) {
+      if (cornerTapCount >= 5) {
         previewMode = true;
-        secretTapCount = 0;
-        showToast("🧪 Secret preview mode ON! Gate bypassed.");
+        cornerTapCount = 0;
+        showToast("🧪 Preview Mode Active!");
         if (!document.getElementById('gate1Card').classList.contains('hidden')) {
           document.getElementById('gate1Card').classList.add('hidden');
           document.getElementById('gate2Card').classList.remove('hidden');
@@ -671,7 +746,7 @@
       }
     }
 
-    // Step 4: Call Decision & Runaway Button Logic
+    // Step 4: Call Decision & Floating Runaway Button
     function handleCallDecision(isYes) {
       ensureMusicPlaying();
       if (isYes) {
@@ -680,10 +755,6 @@
         document.getElementById('callSuccessBox').classList.remove('hidden');
         document.getElementById('callPromptTitle').innerText = 'Yayyy! You said YES! 🎉💖';
         document.getElementById('pleadingSubtitle').innerText = 'Ab call bhi lagao jaldi! 🙈';
-        
-        // Hide runaway button if still roaming around screen
-        const runawayBtn = document.getElementById('runawayBtn');
-        if (runawayBtn) runawayBtn.style.display = 'none';
       } else {
         noAttempts++;
         const sub = document.getElementById('pleadingSubtitle');
@@ -700,20 +771,25 @@
           sub.innerText = "Pakka na? Ek call to banta hai na! 😤";
         } else {
           sub.innerText = "Hehe ab No click karke dikhao! 😜🏃💨";
-          makeButtonRunaway(noBtn);
         }
+
+        makeButtonRunaway(noBtn);
       }
     }
 
-    // Full-Screen Runaway Button
+    // Full-Screen Floating Runaway Logic (Always visible on screen)
     function makeButtonRunaway(btn) {
       btn.style.position = 'fixed';
+      btn.style.display = 'inline-block';
+      btn.style.opacity = '1';
+      btn.style.visibility = 'visible';
       btn.style.zIndex = '9999';
+      btn.style.transition = 'top 0.4s ease-out, left 0.4s ease-out';
 
       const dodge = () => {
-        const padding = 20;
+        const padding = 25;
         const btnWidth = btn.offsetWidth || 100;
-        const btnHeight = btn.offsetHeight || 50;
+        const btnHeight = btn.offsetHeight || 45;
 
         const maxX = window.innerWidth - btnWidth - padding;
         const maxY = window.innerHeight - btnHeight - padding;
@@ -730,6 +806,7 @@
         e.preventDefault();
         dodge();
       };
+
       dodge();
     }
   </script>
