@@ -355,31 +355,31 @@
       </div>
     </div>
 
-    <!-- STEP 4: CALL SECTION -->
+    <!-- STEP 4: CALL SECTION (OPTION 3 LOCKED) -->
     <div id="stepCall" class="w-full flex flex-col gap-6 hidden pop-in">
       <div class="text-center pt-2">
         <span class="inline-block bg-rose-100 text-rose-600 font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-widest mb-2">
-          Final Question 📞
+          Mandatory Question 📞
         </span>
       </div>
 
       <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-pink-100 text-center relative overflow-hidden">
-        <span class="text-5xl block mb-3">📞💖</span>
+        <span class="text-5xl block mb-3">📞👑</span>
         <h2 id="callPromptTitle" class="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-2">
-          Apke Call ka wait.. Kr rhe h.Kya abhi baat krni h ‽ 
+          Ek mandatory sawaal... Kya mujhe abhi ek thank you call mil sakti hai?
         </h2>
         <p id="pleadingSubtitle" class="text-sm sm:text-base font-semibold text-pink-600 mb-6 transition">
-          Sach sach batao! 🙈
+          Birthday protocol hai, bypass allowed nahi hai! 😜
         </p>
 
         <!-- Arena for Call Options -->
         <div id="callArena" class="relative min-h-[90px] w-full flex justify-center items-center gap-4">
           <button id="callYesBtn" onclick="handleCallDecision(true)" class="bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold py-3.5 px-8 rounded-2xl shadow-lg shadow-emerald-200 transition-all duration-200 z-10 hover:scale-105 active:scale-95">
-            Yes! 📞
+            Calling now! 📞
           </button>
           
           <button id="runawayBtn" onclick="handleCallDecision(false)" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold py-3.5 px-8 rounded-2xl border border-rose-200 transition z-20">
-            No 🙅‍♀️
+            Mood nahi hai 🏃‍♀️
           </button>
         </div>
 
@@ -387,10 +387,10 @@
         <div id="callSuccessBox" class="mt-6 p-6 bg-emerald-50 border border-emerald-200 rounded-2xl hidden pop-in">
           <div class="text-4xl mb-2">🥳📞✨</div>
           <h3 class="text-xl font-bold text-emerald-800 mb-1">
-            Mission Successful!
+            Good girl! Protocol accepted!
           </h3>
           <p class="text-sm text-emerald-600 mb-5">
-            Call laga rahi ho na? Direct number par dial karo:
+            Dialer open hai, dial button press karo jaldi:
           </p>
           <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
             <a href="tel:7004875135" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-md flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition">
@@ -667,24 +667,25 @@
         confetti({ particleCount: 200, spread: 100, origin: { y: 0.5 } });
         document.getElementById('callArena').classList.add('hidden');
         document.getElementById('callSuccessBox').classList.remove('hidden');
-        document.getElementById('callPromptTitle').innerText = 'Yayyy! You said YES! 🎉💖';
-        document.getElementById('pleadingSubtitle').innerText = 'Ab call bhi lagao jaldi! 🙈';
+        document.getElementById('callPromptTitle').innerText = 'Good girl! Protocol accepted! 🎉📞';
+        document.getElementById('pleadingSubtitle').innerText = 'Dialer open hai, dial button press karo jaldi! 🙈';
       } else {
         noAttempts++;
         const sub = document.getElementById('pleadingSubtitle');
         const yesBtn = document.getElementById('callYesBtn');
         const noBtn = document.getElementById('runawayBtn');
 
+        // Yes button grows bigger
         yesBtn.style.transform = `scale(${1 + noAttempts * 0.12})`;
 
         if (noAttempts === 1) {
-          sub.innerText = "Please karo na 🥺👉👈";
+          sub.innerText = "Aise kaise mood nahi hai? 🥺👉👈";
         } else if (noAttempts === 2) {
-          sub.innerText = "Aise mat karo please karo na 😭💔";
+          sub.innerText = "Birthday protocol violate mat karo please! 😭💔";
         } else if (noAttempts === 3) {
-          sub.innerText = "Pakka na? Ek call to banta hai na! 😤";
+          sub.innerText = "Pakka na? Ek call to banta hi hai na! 😤";
         } else {
-          sub.innerText = "Hehe ab No click karke dikhao! 😜🏃💨";
+          sub.innerText = "Hehe ab bhag ke dikhao! 😜🏃💨";
           makeButtonRunaway(noBtn);
         }
       }
