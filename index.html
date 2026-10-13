@@ -94,10 +94,6 @@
       transform-origin: top center;
       transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
-    #runawayBtn {
-      transition: top 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), left 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
   </style>
 </head>
 <body class="relative text-gray-800 flex flex-col justify-between" onclick="ensureMusicPlaying()">
@@ -353,7 +349,7 @@
       </div>
     </div>
 
-    <!-- STEP 4: CALL SECTION (RUNAWAY BUTTON ALWAYS VISIBLE) -->
+    <!-- STEP 4: CALL SECTION (RUNAWAY BUTTON FIXED & INSTANT DODGE) -->
     <div id="stepCall" class="w-full flex flex-col gap-6 hidden pop-in">
       <div class="text-center pt-2">
         <span class="inline-block bg-rose-100 text-rose-600 font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-widest mb-2">
@@ -376,26 +372,23 @@
             Calling now! 📞
           </button>
           
-          <button id="runawayBtn" onclick="handleCallDecision(false)" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold py-3.5 px-8 rounded-2xl border border-rose-200 transition z-20">
+          <button id="runawayBtn" onclick="handleCallDecision(false)" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold py-3.5 px-8 rounded-2xl border border-rose-200 transition z-20 select-none touch-none">
             Mood nahi hai 🏃‍♀️
           </button>
         </div>
 
-        <!-- Success Reveal Box -->
+        <!-- Success Reveal Box (Call-Only) -->
         <div id="callSuccessBox" class="mt-6 p-6 bg-emerald-50 border border-emerald-200 rounded-2xl hidden pop-in">
           <div class="text-4xl mb-2">🥳📞✨</div>
           <h3 class="text-xl font-bold text-emerald-800 mb-1">
             Good girl! Protocol accepted!
           </h3>
           <p class="text-sm text-emerald-600 mb-5">
-            Dialer open hai, dial button press karo jaldi:
+            Dialer ready hai, call button press karo jaldi:
           </p>
-          <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
-            <a href="tel:7004875135" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-md flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition">
-              <span>📞</span> Call Now (7004875135)
-            </a>
-            <a href="https://wa.me/917004875135?text=Happy%20Birthday%20Shruti!%20Choti%20Panda%20unlocked%20the%20surprise%20🎂" target="_blank" class="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl shadow-md flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition">
-              <span>💬</span> WhatsApp Wish
+          <div class="flex justify-center items-center">
+            <a href="tel:7004875135" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-4 px-8 rounded-2xl shadow-lg shadow-emerald-200 flex items-center justify-center gap-3 text-lg hover:scale-105 active:scale-95 transition">
+              <span class="text-2xl">📞</span> Call Now (7004875135)
             </a>
           </div>
         </div>
@@ -480,6 +473,7 @@
     let secretTapTimer = null;
     let noAttempts = 0;
     let isBgmPlaying = false;
+    let isRunawayActive = false;
 
     // Continuous Background Music Autoplay Helper
     function ensureMusicPlaying() {
@@ -658,7 +652,7 @@
       }
     }
 
-    // Step 4: Call Decision & Mobile Runaway Logic
+    // Step 4: Call Decision & Instant Dodge Logic
     function handleCallDecision(isYes) {
       ensureMusicPlaying();
       if (isYes) {
@@ -666,7 +660,7 @@
         document.getElementById('callArena').classList.add('hidden');
         document.getElementById('callSuccessBox').classList.remove('hidden');
         document.getElementById('callPromptTitle').innerText = 'Good girl! Protocol accepted! 🎉📞';
-        document.getElementById('pleadingSubtitle').innerText = 'Dialer open hai, dial button press karo jaldi! 🙈';
+        document.getElementById('pleadingSubtitle').innerText = 'Dialer ready hai, call button press karo jaldi! 🙈';
         
         const noBtn = document.getElementById('runawayBtn');
         if (noBtn) noBtn.style.display = 'none';
@@ -676,44 +670,43 @@
         const yesBtn = document.getElementById('callYesBtn');
         const noBtn = document.getElementById('runawayBtn');
 
-        // Yes button grows bigger
-        yesBtn.style.transform = `scale(${1 + noAttempts * 0.12})`;
+        // Yes button grows bigger each tap
+        yesBtn.style.transform = `scale(${1 + noAttempts * 0.15})`;
 
         if (noAttempts === 1) {
           sub.innerText = "Aise kaise mood nahi hai? 🥺👉👈";
         } else if (noAttempts === 2) {
           sub.innerText = "Birthday protocol violate mat karo please! 😭💔";
-        } else if (noAttempts === 3) {
-          sub.innerText = "Pakka na? Ek call to banta hi hai na! 😤";
         } else {
-          sub.innerText = "Hehe ab bhag ke dikhao! 😜🏃💨";
-          makeButtonRunaway(noBtn);
+          sub.innerText = "Hehe ab click karke dikhao! 😜🏃💨";
         }
+
+        makeButtonRunaway(noBtn);
       }
     }
 
-    // Always-Visible Runaway Logic
+    // Instant Mobile & Desktop Dodge Function
     function makeButtonRunaway(btn) {
       btn.style.position = 'fixed';
       btn.style.zIndex = '99999';
+      btn.style.transition = 'all 0.2s ease-out';
       btn.style.opacity = '1';
       btn.style.display = 'block';
-      btn.style.visibility = 'visible';
 
-      const dodge = (e) => {
+      const jump = (e) => {
         if (e) {
           e.preventDefault();
           e.stopPropagation();
         }
 
         const btnWidth = btn.offsetWidth || 130;
-        const btnHeight = btn.offsetHeight || 50;
+        const btnHeight = btn.offsetHeight || 45;
 
-        const minX = 25;
-        const maxX = Math.max(minX, window.innerWidth - btnWidth - 25);
-        
-        const minY = 100;
-        const maxY = Math.max(minY, window.innerHeight - btnHeight - 120);
+        // Viewport safe area padding
+        const minX = 20;
+        const maxX = Math.max(minX, window.innerWidth - btnWidth - 20);
+        const minY = 80;
+        const maxY = Math.max(minY, window.innerHeight - btnHeight - 90);
 
         const randomX = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
         const randomY = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
@@ -722,11 +715,14 @@
         btn.style.top = `${randomY}px`;
       };
 
-      btn.ontouchstart = dodge;
-      btn.onmouseover = dodge;
-      btn.onclick = dodge;
+      if (!isRunawayActive) {
+        isRunawayActive = true;
+        btn.addEventListener('touchstart', jump, { passive: false });
+        btn.addEventListener('pointerdown', jump, { passive: false });
+        btn.addEventListener('mouseover', jump);
+      }
 
-      dodge();
+      jump();
     }
   </script>
 </body>
