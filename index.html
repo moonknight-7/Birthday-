@@ -108,7 +108,6 @@
 
   <!-- Header -->
   <header class="relative z-10 w-full max-w-4xl mx-auto px-4 py-4 flex justify-center sm:justify-start items-center">
-    <!-- Tap 3 times here to bypass everything instantly -->
     <div id="secretLogo" onclick="handleSecretTap(event)" class="flex items-center gap-2 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-sm border border-pink-100 cursor-pointer select-none active:scale-95 transition">
       <span class="text-2xl animate-bounce">🐼</span>
       <span class="font-bold text-sm text-pink-600 tracking-wide">Special for Shruti</span>
@@ -465,7 +464,7 @@
 
   <!-- Secret Developer Toast -->
   <div id="secretToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900/95 text-white text-xs px-5 py-2.5 rounded-full shadow-2xl pointer-events-none transition-all duration-300 opacity-0 transform translate-y-4 z-50 flex items-center gap-2 border border-pink-400">
-    <span>🧪</span> <span>Developer Bypass ON! Direct unlocked.</span>
+    <span>🧪</span> <span>Date Lock Bypassed! Answer the Security Question.</span>
   </div>
 
   <script>
@@ -486,7 +485,7 @@
       }
     }
 
-    // Instant Developer Mode (Tap Panda Logo 3 Times Quickly)
+    // 5 Taps Developer Mode: Date Lock bypass karega aur Security Question khulega
     function handleSecretTap(e) {
       if (e) e.stopPropagation();
       secretTapCount++;
@@ -494,12 +493,12 @@
       
       secretTapTimer = setTimeout(() => {
         secretTapCount = 0;
-      }, 4000); // 4 second window
+      }, 4000);
 
-      if (secretTapCount >= 3) {
+      if (secretTapCount >= 5) {
         previewMode = true;
         secretTapCount = 0;
-        showToast("🧪 Developer Mode: Direct Cake stage unlocked!");
+        showToast("🧪 Date Lock Bypassed! Security Question khul gaya.");
         
         // Sabhi modals close karo
         ['waitModal', 'notBirthdayModal', 'intruderModal'].forEach(id => {
@@ -507,10 +506,9 @@
           if (m) m.classList.add('hidden');
         });
 
-        // Gates hide karo aur direct Cake Stage open karo
+        // Gate 1 hide karo aur Gate 2 (Security Quiz) show karo
         document.getElementById('gate1Card').classList.add('hidden');
-        document.getElementById('gate2Card').classList.add('hidden');
-        goToStep('Cake');
+        document.getElementById('gate2Card').classList.remove('hidden');
         ensureMusicPlaying();
       }
     }
@@ -557,7 +555,7 @@
       letter.classList.remove('hidden');
     }
 
-    // Gate 1: Birthday Check Logic
+    // Gate 1: Birthday Check Logic -> Leads directly to Security Question
     function verifyBirthday(isYes) {
       ensureMusicPlaying();
       if (!isYes) {
@@ -599,13 +597,13 @@
     }
     setInterval(updateLiveCountdown, 1000);
 
-    // Gate 2: Nickname Security Quiz
+    // Gate 2: Nickname Security Quiz -> Unlocks Cake Stage
     function checkAnswer(ans) {
       ensureMusicPlaying();
       if (ans === 'choti panda') {
         confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
         document.getElementById('gate2Card').classList.add('hidden');
-        document.getElementById('stepCake').classList.remove('hidden');
+        goToStep('Cake');
       } else {
         document.getElementById('intruderModal').classList.remove('hidden');
       }
@@ -664,7 +662,7 @@
       }
     }
 
-    // Step 4: Call Decision (Starts jumping on 3rd click, never freezes)
+    // Step 4: Call Decision (Starts jumping on 3rd click inside white arena)
     const safeCorners = [
       { top: '15px', left: '15px' },
       { top: '15px', right: '15px' },
@@ -699,7 +697,6 @@
         } else if (noAttempts === 2) {
           sub.innerText = "Birthday protocol violate mat karo please! 😭💔";
         } else {
-          // 3rd click and beyond: Move hona shuru hoga
           sub.innerText = "Hehe ab pakad ke dikhao! 😜🏃💨";
           makeButtonRunaway(noBtn);
         }
