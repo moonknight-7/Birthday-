@@ -349,7 +349,7 @@
       </div>
     </div>
 
-    <!-- STEP 4: CALL SECTION (RUNAWAY BUTTON FIXED & INSTANT DODGE) -->
+    <!-- STEP 4: CALL SECTION (WHITE BOX BOUNDED DODGE) -->
     <div id="stepCall" class="w-full flex flex-col gap-6 hidden pop-in">
       <div class="text-center pt-2">
         <span class="inline-block bg-rose-100 text-rose-600 font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-widest mb-2">
@@ -357,28 +357,29 @@
         </span>
       </div>
 
-      <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-pink-100 text-center relative overflow-hidden">
+      <!-- Main White Card Container -->
+      <div id="callCardBox" class="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-pink-100 text-center relative overflow-hidden">
         <span class="text-5xl block mb-3">📞👑</span>
         <h2 id="callPromptTitle" class="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-2">
           Ek mandatory sawaal... Kya mujhe abhi ek thank you call mil sakti hai?
         </h2>
-        <p id="pleadingSubtitle" class="text-sm sm:text-base font-semibold text-pink-600 mb-6 transition">
+        <p id="pleadingSubtitle" class="text-sm sm:text-base font-semibold text-pink-600 mb-4 transition">
           Birthday protocol hai, bypass allowed nahi hai! 😜
         </p>
 
-        <!-- Arena for Call Options -->
-        <div id="callArena" class="relative min-h-[90px] w-full flex justify-center items-center gap-4">
+        <!-- Arena for Call Options: Confined inside this white box -->
+        <div id="callArena" class="relative w-full min-h-[220px] rounded-2xl flex flex-col sm:flex-row items-center justify-center gap-4 p-4">
           <button id="callYesBtn" onclick="handleCallDecision(true)" class="bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold py-3.5 px-8 rounded-2xl shadow-lg shadow-emerald-200 transition-all duration-200 z-10 hover:scale-105 active:scale-95">
             Calling now! 📞
           </button>
           
-          <button id="runawayBtn" onclick="handleCallDecision(false)" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold py-3.5 px-8 rounded-2xl border border-rose-200 transition z-20 select-none touch-none">
+          <button id="runawayBtn" onclick="handleCallDecision(false)" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold py-3.5 px-8 rounded-2xl border border-rose-200 transition-all duration-200 z-20 select-none touch-none">
             Mood nahi hai 🏃‍♀️
           </button>
         </div>
 
         <!-- Success Reveal Box (Call-Only) -->
-        <div id="callSuccessBox" class="mt-6 p-6 bg-emerald-50 border border-emerald-200 rounded-2xl hidden pop-in">
+        <div id="callSuccessBox" class="mt-4 p-6 bg-emerald-50 border border-emerald-200 rounded-2xl hidden pop-in">
           <div class="text-4xl mb-2">🥳📞✨</div>
           <h3 class="text-xl font-bold text-emerald-800 mb-1">
             Good girl! Protocol accepted!
@@ -652,7 +653,7 @@
       }
     }
 
-    // Step 4: Call Decision & Instant Dodge Logic
+    // Step 4: Call Decision & Bounded Runaway Logic
     function handleCallDecision(isYes) {
       ensureMusicPlaying();
       if (isYes) {
@@ -670,8 +671,8 @@
         const yesBtn = document.getElementById('callYesBtn');
         const noBtn = document.getElementById('runawayBtn');
 
-        // Yes button grows bigger each tap
-        yesBtn.style.transform = `scale(${1 + noAttempts * 0.15})`;
+        // Yes button thoda grow karega
+        yesBtn.style.transform = `scale(${1 + Math.min(noAttempts * 0.08, 0.4)})`;
 
         if (noAttempts === 1) {
           sub.innerText = "Aise kaise mood nahi hai? 🥺👉👈";
@@ -685,13 +686,16 @@
       }
     }
 
-    // Instant Mobile & Desktop Dodge Function
+    // White Box ke andar hi dodge karega aur Yes button se overlap nahi hoga
     function makeButtonRunaway(btn) {
-      btn.style.position = 'fixed';
-      btn.style.zIndex = '99999';
-      btn.style.transition = 'all 0.2s ease-out';
-      btn.style.opacity = '1';
+      const arena = document.getElementById('callArena');
+      const yesBtn = document.getElementById('callYesBtn');
+
+      btn.style.position = 'absolute';
+      btn.style.zIndex = '30';
       btn.style.display = 'block';
+      btn.style.visibility = 'visible';
+      btn.style.opacity = '1';
 
       const jump = (e) => {
         if (e) {
@@ -699,17 +703,46 @@
           e.stopPropagation();
         }
 
-        const btnWidth = btn.offsetWidth || 130;
-        const btnHeight = btn.offsetHeight || 45;
+        const arenaRect = arena.getBoundingClientRect();
+        const yesRect = yesBtn.getBoundingClientRect();
 
-        // Viewport safe area padding
-        const minX = 20;
-        const maxX = Math.max(minX, window.innerWidth - btnWidth - 20);
-        const minY = 80;
-        const maxY = Math.max(minY, window.innerHeight - btnHeight - 90);
+        const btnWidth = btn.offsetWidth || 120;
+        const btnHeight = btn.offsetHeight || 44;
 
-        const randomX = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
-        const randomY = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
+        // Arena ke andar safe dimensions
+        const maxX = arena.clientWidth - btnWidth - 10;
+        const maxY = arena.clientHeight - btnHeight - 10;
+
+        // Yes button ka arena ke relative coordinates
+        const yesRelLeft = yesRect.left - arenaRect.left;
+        const yesRelTop = yesRect.top - arenaRect.top;
+        const yesRelRight = yesRelLeft + yesRect.width;
+        const yesRelBottom = yesRelTop + yesRect.height;
+
+        let randomX, randomY, overlap;
+        let attempts = 0;
+
+        do {
+          randomX = Math.floor(Math.random() * Math.max(10, maxX - 10)) + 10;
+          randomY = Math.floor(Math.random() * Math.max(10, maxY - 10)) + 10;
+
+          // Check if it overlaps with Yes button (+ safe 15px buffer)
+          const buffer = 15;
+          overlap = !(
+            randomX + btnWidth + buffer < yesRelLeft ||
+            randomX > yesRelRight + buffer ||
+            randomY + btnHeight + buffer < yesRelTop ||
+            randomY > yesRelBottom + buffer
+          );
+
+          attempts++;
+        } while (overlap && attempts < 30);
+
+        // Agar overlap avoid na ho paaye, toh Yes button ke vertically opposite bhej do
+        if (overlap) {
+          randomX = 15;
+          randomY = (yesRelTop > arena.clientHeight / 2) ? 15 : maxY - 10;
+        }
 
         btn.style.left = `${randomX}px`;
         btn.style.top = `${randomY}px`;
